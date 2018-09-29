@@ -1,6 +1,5 @@
 import urllib.parse
 import boto3
-import re
 from typing import List
 
 from note_parse import parse_gretchens_notes, Activity, Nap
