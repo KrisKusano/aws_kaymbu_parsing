@@ -1,0 +1,427 @@
+Delivered-To: kdkusano@gmail.com
+Received: by 2002:a9d:729c:0:0:0:0:0 with SMTP id t28-v6csp1187190otj;
+        Thu, 13 Sep 2018 13:44:23 -0700 (PDT)
+X-Google-Smtp-Source: ANB0VdZ2CMzZIVut2xn2/TR009JJXti2OgTExk/sJzky3KxIpqUreV526nx8zpRdGh4DE6BNMz0g
+X-Received: by 2002:a50:9a64:: with SMTP id o91-v6mr14291864edb.123.1536871463607;
+        Thu, 13 Sep 2018 13:44:23 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1536871463; cv=none;
+        d=google.com; s=arc-20160816;
+        b=tksloqmnWdvxSU1lkXQsMxkBfq4gisaNsAlKRP2NA2Pet4JZMLH4PcDGtcCaptlSEM
+         +aG/uuKinDgrQHqs5/88N4dnqaHYL/EwYrxn21KbgFv1gzpuG1csqKWU1Dnh5Jewtu3Z
+         Yp9oPseo4PzLuS5b30xGrIJ3PVmUmxIZbQ5kvSkbkUVwwUY4SnTW3fmWe2fmWoW4ipiC
+         1Clig4oYRk8dkzRe/GsQDimkwF3qKnif8MrDlD91wUuo+cO1HAXFXUAQeC/N3OiMsXaN
+         M0OWsTuej1w4/3Cv4dne3D1Rp5UW8gmpHQVjqptn2sWTojVKig17oeI3h+FvPNUjiSqm
+         G0HA==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20160816;
+        h=subject:message-id:to:mime-version:from:date
+         :content-transfer-encoding:dkim-signature:dkim-signature;
+        bh=9p9iQW/b3YhU8HTuXV+wJsjDpAisVzQe67y3LJMKWhU=;
+        b=GF6Kp6y6OJHuyy2McteT0qHddrnsmKdtNR14illIfnJTh7GkSx84CiXJI9v/vJ0J6y
+         OoBluyb2y37tHij7US6nkBXwlmFfFz4pZDIQD470Ijj9BPhnbreyad1ERc2jVIReIHsg
+         0BmaFiJWOVmrqIpiSbHWHJuEP7JCk2gMXWSmoNKorKJOAsdh3H6+vc8/LwWDdmg/+GET
+         SNNaGWpmbWe4wNYmEs0/T10ea5wZIOELO63PROpazcJeyXAGmAFXBIPiJJ3SnpcZ6Ko4
+         4qeyrI/xY1YRD8Ur3EFFQ7Dk30aofsq/5i0+WKTC4CKue8eJxOQRmmHb8nJGhCvIzkAj
+         NyUA==
+ARC-Authentication-Results: i=1; mx.google.com;
+       dkim=pass header.i=@email.kaymbu.com header.s=smtpapi header.b=sZouKru5;
+       dkim=pass header.i=@sendgrid.info header.s=smtpapi header.b=LFkA7w38;
+       spf=pass (google.com: domain of bounces+616114-a0e4-kdkusano=gmail.com@email.kaymbu.com designates 167.89.8.228 as permitted sender) smtp.mailfrom="bounces+616114-a0e4-kdkusano=gmail.com@email.kaymbu.com";
+       dmarc=pass (p=NONE sp=NONE dis=NONE) header.from=kaymbu.com
+Return-Path: <bounces+616114-a0e4-kdkusano=gmail.com@email.kaymbu.com>
+Received: from o1.email.kaymbu.com (o1.email.kaymbu.com. [167.89.8.228])
+        by mx.google.com with ESMTPS id y43-v6si5391364edd.416.2018.09.13.13.44.22
+        for <kdkusano@gmail.com>
+        (version=TLS1_2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128/128);
+        Thu, 13 Sep 2018 13:44:23 -0700 (PDT)
+Received-SPF: pass (google.com: domain of bounces+616114-a0e4-kdkusano=gmail.com@email.kaymbu.com designates 167.89.8.228 as permitted sender) client-ip=167.89.8.228;
+Authentication-Results: mx.google.com;
+       dkim=pass header.i=@email.kaymbu.com header.s=smtpapi header.b=sZouKru5;
+       dkim=pass header.i=@sendgrid.info header.s=smtpapi header.b=LFkA7w38;
+       spf=pass (google.com: domain of bounces+616114-a0e4-kdkusano=gmail.com@email.kaymbu.com designates 167.89.8.228 as permitted sender) smtp.mailfrom="bounces+616114-a0e4-kdkusano=gmail.com@email.kaymbu.com";
+       dmarc=pass (p=NONE sp=NONE dis=NONE) header.from=kaymbu.com
+DKIM-Signature: v=1; a=rsa-sha1; c=relaxed/relaxed; 
+	d=email.kaymbu.com; 
+	h=content-transfer-encoding:content-type:from:mime-version:to:subject; 
+	s=smtpapi; bh=QI/QROdL4IMSy9lgy3B5zGtUceQ=; b=sZouKru5xiBHElbQ+j
+	EZCuFsXfHGytsFcqbep7C+wjToNbvLLh/Xi8uCKpVCrLfDu0Z55JVKuyqowSQ0V6
+	bmh5cRU62g5w6IXE2S1fbLde/Sv3tQAw6egtnLqMSX3GYJxNx83BR+9T8rjOTCZp
+	waZe51wiDVEw+4kEY0XfW7ObU=
+DKIM-Signature: v=1; a=rsa-sha1; c=relaxed/relaxed; d=sendgrid.info; 
+	h=content-transfer-encoding:content-type:from:mime-version:to:subject:x-feedback-id; 
+	s=smtpapi; bh=QI/QROdL4IMSy9lgy3B5zGtUceQ=; b=LFkA7w38R7CtgDIlqJ
+	cGE0jOxfZgRWLedoNAfW0REmoLIf2Md9AY0IKAxdoa5NrJbz/aGGrK4fZ6izagc1
+	Ali8htz3D2czzuZWilbCI2fr2f+9Ank9YYPl6OC4aLDIZFhkgiy5D7fvSlctMvNM
+	rc9SPhikgXKbrfPWongmvno0A=
+Received: by filter1588p1mdw1.sendgrid.net with SMTP id filter1588p1mdw1-27475-5B9ACC23-21
+        2018-09-13 20:44:19.60475704 +0000 UTC m=+603011.765982443
+Received: from NjE2MTE0 (ec2-54-159-162-160.compute-1.amazonaws.com [54.159.162.160])
+	by ismtpd0004p1iad1.sendgrid.net (SG) with HTTP id DYsGtZgQRheVXna_sWvoAQ
+	Thu, 13 Sep 2018 20:44:19.612 +0000 (UTC)
+Content-Transfer-Encoding: quoted-printable
+Content-Type: text/html; charset=UTF-8
+Date: Thu, 13 Sep 2018 20:44:19 +0000 (UTC)
+From: "Terrace Toddlers" <cls5b47c424db8f39f25f3c0a2a@inbox.kaymbu.com>
+Mime-Version: 1.0
+To: kdkusano@gmail.com
+Message-ID: <DYsGtZgQRheVXna_sWvoAQ@ismtpd0004p1iad1.sendgrid.net>
+Subject: Emilia's Daily Note for Thursday, September 13th
+X-SG-EID: Go91ET9GZ4k2qaQHZ+ZBhCdfuO+X209atgqXd5mac63Wrsw7JIqn/S7aqGL4C76KVhzZoO29r2+g2r
+ b7oKyRa/iQtWhpav2OJT74MRpdcAJclqsw9djDStLc+qNcEarAGunxvAupH+N+pMxB9jenRbkVg9IQ
+ erBww0aF6YbhWNFPiHnfz0e4Q/tO3E6eYxU4/wC9TvtZoO9IcrnRCzVBzrCCFZ4bmK8i2RxTTnct0A
+ o222c1Xeqg9Q3MSaqqL0EKMtBku4QRAuiAuttxcPIKwQ==
+X-SG-ID: dHx77kcKhV9g4TDVzq7oVadORk29GT63eMujmWNeV7hOojzWnrRC+8CvCgkMikvz3sIfdpZLUrDlbL
+ NzDK4YEK+5S6qmHcSQ12aSw59hFeAn4pnYXh2b7QWjvmlU0UTMfXEg4OxVbdnr4BtAhd0u4miATIRG
+ INY1ERTMipmrs1TBmbLKQkOGKeVlLHjl7KAu
+X-Feedback-ID: 616114:iZp60wXajQ+RwCwDtEBw22+R05Bxg95nqLSxo2pT7xI=:p2GXA/8HtV+1x4GpYniq0w==:SG
+
+<!DOCTYPE html><html lang=3D"en" xmlns=3D"http://www.w3.org/1999/xhtml"><he=
+ad><meta charset=3D"utf-8"><meta name=3D"viewport" content=3D"width=3Ddevic=
+e-width"><meta http-equiv=3D"X-UA-Compatible" content=3D"IE=3Dedge"><title>=
+Daily Note</title><style type=3D"text/css">.thread-item.expanded .thread-bo=
+dy .body,
+.msg-body {
+  width: 100% !important;
+  display: block !important;
+}
+a[href^=3Dtel],
+.mobile_link,
+.mobile_link a {
+  color: #222 !important;
+  text-decoration: underline !important;
+}
+@media only screen and (min-width: 601px) {
+  .email-container {
+    width: 440px !important;
+  }
+}</style></head><body leftmargin=3D"0" topmargin=3D"0" marginwidth=3D"0" ma=
+rginheight=3D"0" style=3D"background-color: #fff; font-family: 'arial', san=
+s-serif; height: 100%; margin: 0; padding: 0; width: 100%;"><div></div><tab=
+le id=3D"bodyTable" cellpadding=3D"0" cellspacing=3D"0" border=3D"0" height=
+=3D"100%" width=3D"100%" style=3D"border-collapse: collapse; border-spacing=
+: 0; height: 100%; margin: 0 auto; padding: 0; table-layout: fixed; width: =
+100%;"><tr><td style=3D"border-collapse: collapse; font-family: 'arial', sa=
+ns-serif; "><table cellpadding=3D"0" cellspacing=3D"0" align=3D"center" sty=
+le=3D"background-color: #fff; border: 1px solid #ccc; border-collapse: coll=
+apse; border-spacing: 0; margin: 0px auto; width: 440px;" class=3D"email-co=
+ntainer"><tr><td style=3D"border-collapse: collapse; font-family: 'arial', =
+sans-serif; " class=3D"header-container"><img src=3D"https://d2k9f6tk478nyp=
+.cloudfront.net/5b47c333db8f39f25f3bc52d/emailheader-1534439871392.png" wid=
+th=3D"440" border=3D"0" style=3D"border: 0; outline: none; text-decoration:=
+ none;"><table style=3D"border-collapse: collapse; border-spacing: 0; width=
+: 100%;" class=3D"heading"><tr><td style=3D"border-collapse: collapse; font=
+-family: 'arial', sans-serif; height: 10px; padding: 0px 15px; padding-top:=
+ 5px; width: 100%;" class=3D"vertical-padding"></td></tr><tr><td style=3D"b=
+order-collapse: collapse; font-family: 'arial', sans-serif; font-size: 22px=
+; font-weight: bold; padding: 0px 15px;" class=3D"heading-name">Emilia's Da=
+ily Note</td></tr><tr><td style=3D"border-collapse: collapse; font-family: =
+'arial', sans-serif; height: 3px; padding: 0px 15px; width: 100%;" class=3D=
+"vertical-padding inner"></td></tr><tr><td style=3D"border-collapse: collap=
+se; color: #999; font-family: 'arial', sans-serif; font-size: 18px; padding=
+: 0px 15px;" class=3D"heading-date">September 13th, 2018</td></tr><tr><td s=
+tyle=3D"border-collapse: collapse; font-family: 'arial', sans-serif; height=
+: 10px; padding: 0px 15px; width: 100%;" class=3D"vertical-padding"></td></=
+tr></table><table style=3D"border-collapse: collapse; border-spacing: 0; wi=
+dth: 100%;" class=3D"divider"><tr><td style=3D"border-collapse: collapse; f=
+ont-family: 'arial', sans-serif; height: 10px; width: 100%;" class=3D"verti=
+cal-padding"></td></tr><tr><td style=3D"background-color: #f2f2f2; border-c=
+ollapse: collapse; font-family: 'arial', sans-serif; height: 1px; padding: =
+0px;" class=3D"spacer"></td></tr><tr><td style=3D"border-collapse: collapse=
+; font-family: 'arial', sans-serif; height: 10px; width: 100%;" class=3D"ve=
+rtical-padding"></td></tr></table></td></tr><tr><td style=3D"border-collaps=
+e: collapse; font-family: 'arial', sans-serif; padding: 10px;" class=3D"med=
+ia-container"><table border=3D"0" style=3D"border-collapse: collapse; borde=
+r-spacing: 0; " class=3D"activity"><tr><td width=3D"50" align=3D"center" st=
+yle=3D"border-collapse: collapse; font-family: 'arial', sans-serif; " class=
+=3D"acitivty-left activity-icon"><img src=3D"https://kaymbu-production.s3.a=
+mazonaws.com/dailynote/note.png" width=3D"50" height=3D"50" border=3D"0" st=
+yle=3D"border: 0; outline: none; text-decoration: none;"></td><td width=3D"=
+300" style=3D"color: #000000; border-collapse: collapse; font-family: 'aria=
+l', sans-serif; font-size: 18px; font-weight: bold; padding: 0px 10px 0px 1=
+0px;" class=3D"activity-middle activity-name">Note</td><td width=3D"70" sty=
+le=3D"border-collapse: collapse; font-family: 'arial', sans-serif; " class=
+=3D"activity-right"></td></tr><tr><td colspan=3D"3" style=3D"border-collaps=
+e: collapse; font-family: 'arial', sans-serif; height: 3px; width: 100%;" c=
+lass=3D"vertical-padding inner"></td></tr><tr><td width=3D"50" valign=3D"to=
+p" style=3D"border-collapse: collapse; font-family: 'arial', sans-serif; fo=
+nt-size: 11px; font-weight: bold; mso-table-lspace: 0pt; color: #666666; ms=
+o-table-rspace: 0pt;" class=3D"activity-left activity-time"></td><td width=
+=3D"300" colspan=3D"2" style=3D"border-collapse: collapse; font-family: 'ar=
+ial', sans-serif; font-size: 13px; font-weight: bold; padding: 0px 10px 0px=
+ 10px;" class=3D"activity-middle activity-result">Picture Day</td></tr><tr>=
+<td colspan=3D"3" style=3D"border-collapse: collapse; font-family: 'arial',=
+ sans-serif; height: 3px; width: 100%;" class=3D"vertical-padding inner"></=
+td></tr><tr><td width=3D"50" style=3D"border-collapse: collapse; font-famil=
+y: 'arial', sans-serif; " class=3D"activity-left"></td><td width=3D"300" co=
+lspan=3D"2" style=3D"border-collapse: collapse; color: #000; font-family: '=
+arial', sans-serif; font-size: 13px; padding: 0px 10px 0px 10px;" class=3D"=
+activity-middle activity-notes">Hello
+I wanted to let everyone know it's picture day on Monday! We are taking gro=
+up pictures at 9 and if Monday is not your normal day you can still come on=
+ Monday for pictures.  Thank you!=20
+
+</td></tr><tr><td colspan=3D"3" style=3D"border-collapse: collapse; font-fa=
+mily: 'arial', sans-serif; height: 3px; width: 100%;" class=3D"vertical-pad=
+ding inner"></td></tr></table><table style=3D"border-collapse: collapse; bo=
+rder-spacing: 0; width: 100%;" class=3D"divider"><tr><td style=3D"border-co=
+llapse: collapse; font-family: 'arial', sans-serif; height: 10px; width: 10=
+0%;" class=3D"vertical-padding"></td></tr><tr><td style=3D"background-color=
+: #f2f2f2; border-collapse: collapse; font-family: 'arial', sans-serif; hei=
+ght: 1px; padding: 0px;" class=3D"spacer"></td></tr><tr><td style=3D"border=
+-collapse: collapse; font-family: 'arial', sans-serif; height: 10px; width:=
+ 100%;" class=3D"vertical-padding"></td></tr></table><table border=3D"0" st=
+yle=3D"border-collapse: collapse; border-spacing: 0; " class=3D"activity"><=
+tr><td width=3D"50" align=3D"center" style=3D"border-collapse: collapse; fo=
+nt-family: 'arial', sans-serif; " class=3D"acitivty-left activity-icon"><im=
+g src=3D"https://kaymbu-production.s3.amazonaws.com/dailynote/meal.png" wid=
+th=3D"50" height=3D"50" border=3D"0" style=3D"border: 0; outline: none; tex=
+t-decoration: none;"></td><td width=3D"300" style=3D"color: #000000; border=
+-collapse: collapse; font-family: 'arial', sans-serif; font-size: 18px; fon=
+t-weight: bold; padding: 0px 10px 0px 10px;" class=3D"activity-middle activ=
+ity-name">Meal</td><td width=3D"70" style=3D"border-collapse: collapse; fon=
+t-family: 'arial', sans-serif; " class=3D"activity-right"></td></tr><tr><td=
+ colspan=3D"3" style=3D"border-collapse: collapse; font-family: 'arial', sa=
+ns-serif; height: 3px; width: 100%;" class=3D"vertical-padding inner"></td>=
+</tr><tr><td width=3D"50" valign=3D"top" style=3D"border-collapse: collapse=
+; font-family: 'arial', sans-serif; font-size: 11px; font-weight: bold; mso=
+-table-lspace: 0pt; color: #666666; mso-table-rspace: 0pt;" class=3D"activi=
+ty-left activity-time">8:08am</td><td width=3D"300" colspan=3D"2" style=3D"=
+border-collapse: collapse; font-family: 'arial', sans-serif; font-size: 13p=
+x; font-weight: bold; padding: 0px 10px 0px 10px;" class=3D"activity-middle=
+ activity-result">Ate all of my breakfast</td></tr><tr><td colspan=3D"3" st=
+yle=3D"border-collapse: collapse; font-family: 'arial', sans-serif; height:=
+ 3px; width: 100%;" class=3D"vertical-padding inner"></td></tr><tr><td cols=
+pan=3D"3" style=3D"border-collapse: collapse; font-family: 'arial', sans-se=
+rif; height: 3px; width: 100%;" class=3D"vertical-padding inner"></td></tr>=
+<tr><td width=3D"50" valign=3D"top" style=3D"border-collapse: collapse; fon=
+t-family: 'arial', sans-serif; font-size: 11px; font-weight: bold; mso-tabl=
+e-lspace: 0pt; color: #666666; mso-table-rspace: 0pt;" class=3D"activity-le=
+ft activity-time">10:10am</td><td width=3D"300" colspan=3D"2" style=3D"bord=
+er-collapse: collapse; font-family: 'arial', sans-serif; font-size: 13px; f=
+ont-weight: bold; padding: 0px 10px 0px 10px;" class=3D"activity-middle act=
+ivity-result">Ate all of my snack</td></tr><tr><td colspan=3D"3" style=3D"b=
+order-collapse: collapse; font-family: 'arial', sans-serif; height: 3px; wi=
+dth: 100%;" class=3D"vertical-padding inner"></td></tr><tr><td colspan=3D"3=
+" style=3D"border-collapse: collapse; font-family: 'arial', sans-serif; hei=
+ght: 3px; width: 100%;" class=3D"vertical-padding inner"></td></tr><tr><td =
+width=3D"50" valign=3D"top" style=3D"border-collapse: collapse; font-family=
+: 'arial', sans-serif; font-size: 11px; font-weight: bold; mso-table-lspace=
+: 0pt; color: #666666; mso-table-rspace: 0pt;" class=3D"activity-left activ=
+ity-time">12:25pm</td><td width=3D"300" colspan=3D"2" style=3D"border-colla=
+pse: collapse; font-family: 'arial', sans-serif; font-size: 13px; font-weig=
+ht: bold; padding: 0px 10px 0px 10px;" class=3D"activity-middle activity-re=
+sult">Ate all of my lunch</td></tr><tr><td colspan=3D"3" style=3D"border-co=
+llapse: collapse; font-family: 'arial', sans-serif; height: 3px; width: 100=
+%;" class=3D"vertical-padding inner"></td></tr><tr><td colspan=3D"3" style=
+=3D"border-collapse: collapse; font-family: 'arial', sans-serif; height: 3p=
+x; width: 100%;" class=3D"vertical-padding inner"></td></tr><tr><td width=
+=3D"50" valign=3D"top" style=3D"border-collapse: collapse; font-family: 'ar=
+ial', sans-serif; font-size: 11px; font-weight: bold; mso-table-lspace: 0pt=
+; color: #666666; mso-table-rspace: 0pt;" class=3D"activity-left activity-t=
+ime">3:38pm</td><td width=3D"300" colspan=3D"2" style=3D"border-collapse: c=
+ollapse; font-family: 'arial', sans-serif; font-size: 13px; font-weight: bo=
+ld; padding: 0px 10px 0px 10px;" class=3D"activity-middle activity-result">=
+Ate all of my snack</td></tr><tr><td colspan=3D"3" style=3D"border-collapse=
+: collapse; font-family: 'arial', sans-serif; height: 3px; width: 100%;" cl=
+ass=3D"vertical-padding inner"></td></tr><tr><td colspan=3D"3" style=3D"bor=
+der-collapse: collapse; font-family: 'arial', sans-serif; height: 3px; widt=
+h: 100%;" class=3D"vertical-padding inner"></td></tr></table><table style=
+=3D"border-collapse: collapse; border-spacing: 0; width: 100%;" class=3D"di=
+vider"><tr><td style=3D"border-collapse: collapse; font-family: 'arial', sa=
+ns-serif; height: 10px; width: 100%;" class=3D"vertical-padding"></td></tr>=
+<tr><td style=3D"background-color: #f2f2f2; border-collapse: collapse; font=
+-family: 'arial', sans-serif; height: 1px; padding: 0px;" class=3D"spacer">=
+</td></tr><tr><td style=3D"border-collapse: collapse; font-family: 'arial',=
+ sans-serif; height: 10px; width: 100%;" class=3D"vertical-padding"></td></=
+tr></table><table border=3D"0" style=3D"border-collapse: collapse; border-s=
+pacing: 0; " class=3D"activity"><tr><td width=3D"50" align=3D"center" style=
+=3D"border-collapse: collapse; font-family: 'arial', sans-serif; " class=3D=
+"acitivty-left activity-icon"><img src=3D"https://kaymbu-production.s3.amaz=
+onaws.com/dailynote/diaper.png" width=3D"50" height=3D"50" border=3D"0" sty=
+le=3D"border: 0; outline: none; text-decoration: none;"></td><td width=3D"3=
+00" style=3D"color: #000000; border-collapse: collapse; font-family: 'arial=
+', sans-serif; font-size: 18px; font-weight: bold; padding: 0px 10px 0px 10=
+px;" class=3D"activity-middle activity-name">Diaper</td><td width=3D"70" st=
+yle=3D"border-collapse: collapse; font-family: 'arial', sans-serif; " class=
+=3D"activity-right"></td></tr><tr><td colspan=3D"3" style=3D"border-collaps=
+e: collapse; font-family: 'arial', sans-serif; height: 3px; width: 100%;" c=
+lass=3D"vertical-padding inner"></td></tr><tr><td width=3D"50" valign=3D"to=
+p" style=3D"border-collapse: collapse; font-family: 'arial', sans-serif; fo=
+nt-size: 11px; font-weight: bold; mso-table-lspace: 0pt; color: #666666; ms=
+o-table-rspace: 0pt;" class=3D"activity-left activity-time">8:30am</td><td =
+width=3D"300" colspan=3D"2" style=3D"border-collapse: collapse; font-family=
+: 'arial', sans-serif; font-size: 13px; font-weight: bold; padding: 0px 10p=
+x 0px 10px;" class=3D"activity-middle activity-result">BM diaper</td></tr><=
+tr><td colspan=3D"3" style=3D"border-collapse: collapse; font-family: 'aria=
+l', sans-serif; height: 3px; width: 100%;" class=3D"vertical-padding inner"=
+></td></tr><tr><td colspan=3D"3" style=3D"border-collapse: collapse; font-f=
+amily: 'arial', sans-serif; height: 3px; width: 100%;" class=3D"vertical-pa=
+dding inner"></td></tr><tr><td width=3D"50" valign=3D"top" style=3D"border-=
+collapse: collapse; font-family: 'arial', sans-serif; font-size: 11px; font=
+-weight: bold; mso-table-lspace: 0pt; color: #666666; mso-table-rspace: 0pt=
+;" class=3D"activity-left activity-time">4:13pm</td><td width=3D"300" colsp=
+an=3D"2" style=3D"border-collapse: collapse; font-family: 'arial', sans-ser=
+if; font-size: 13px; font-weight: bold; padding: 0px 10px 0px 10px;" class=
+=3D"activity-middle activity-result">BM diaper</td></tr><tr><td colspan=3D"=
+3" style=3D"border-collapse: collapse; font-family: 'arial', sans-serif; he=
+ight: 3px; width: 100%;" class=3D"vertical-padding inner"></td></tr><tr><td=
+ colspan=3D"3" style=3D"border-collapse: collapse; font-family: 'arial', sa=
+ns-serif; height: 3px; width: 100%;" class=3D"vertical-padding inner"></td>=
+</tr></table><table style=3D"border-collapse: collapse; border-spacing: 0; =
+width: 100%;" class=3D"divider"><tr><td style=3D"border-collapse: collapse;=
+ font-family: 'arial', sans-serif; height: 10px; width: 100%;" class=3D"ver=
+tical-padding"></td></tr><tr><td style=3D"background-color: #f2f2f2; border=
+-collapse: collapse; font-family: 'arial', sans-serif; height: 1px; padding=
+: 0px;" class=3D"spacer"></td></tr><tr><td style=3D"border-collapse: collap=
+se; font-family: 'arial', sans-serif; height: 10px; width: 100%;" class=3D"=
+vertical-padding"></td></tr></table><table border=3D"0" style=3D"border-col=
+lapse: collapse; border-spacing: 0; " class=3D"activity"><tr><td width=3D"5=
+0" align=3D"center" style=3D"border-collapse: collapse; font-family: 'arial=
+', sans-serif; " class=3D"acitivty-left activity-icon"><img src=3D"https://=
+kaymbu-production.s3.amazonaws.com/dailynote/nap.png" width=3D"50" height=
+=3D"50" border=3D"0" style=3D"border: 0; outline: none; text-decoration: no=
+ne;"></td><td width=3D"300" style=3D"color: #000000; border-collapse: colla=
+pse; font-family: 'arial', sans-serif; font-size: 18px; font-weight: bold; =
+padding: 0px 10px 0px 10px;" class=3D"activity-middle activity-name">Nap</t=
+d><td width=3D"70" style=3D"border-collapse: collapse; font-family: 'arial'=
+, sans-serif; " class=3D"activity-right"></td></tr><tr><td colspan=3D"3" st=
+yle=3D"border-collapse: collapse; font-family: 'arial', sans-serif; height:=
+ 3px; width: 100%;" class=3D"vertical-padding inner"></td></tr><tr><td widt=
+h=3D"50" valign=3D"top" style=3D"border-collapse: collapse; font-family: 'a=
+rial', sans-serif; font-size: 11px; font-weight: bold; mso-table-lspace: 0p=
+t; color: #666666; mso-table-rspace: 0pt;" class=3D"activity-left activity-=
+time">1:00pm</td><td width=3D"300" colspan=3D"2" style=3D"border-collapse: =
+collapse; font-family: 'arial', sans-serif; font-size: 13px; font-weight: b=
+old; padding: 0px 10px 0px 10px;" class=3D"activity-middle activity-result"=
+>Napped for 1 hour and 40 minutes (1:00 PM - 2:40 PM)</td></tr><tr><td cols=
+pan=3D"3" style=3D"border-collapse: collapse; font-family: 'arial', sans-se=
+rif; height: 3px; width: 100%;" class=3D"vertical-padding inner"></td></tr>=
+<tr><td colspan=3D"3" style=3D"border-collapse: collapse; font-family: 'ari=
+al', sans-serif; height: 3px; width: 100%;" class=3D"vertical-padding inner=
+"></td></tr></table><table style=3D"border-collapse: collapse; border-spaci=
+ng: 0; width: 100%;" class=3D"divider"><tr><td style=3D"border-collapse: co=
+llapse; font-family: 'arial', sans-serif; height: 10px; width: 100%;" class=
+=3D"vertical-padding"></td></tr><tr><td style=3D"background-color: #f2f2f2;=
+ border-collapse: collapse; font-family: 'arial', sans-serif; height: 1px; =
+padding: 0px;" class=3D"spacer"></td></tr><tr><td style=3D"border-collapse:=
+ collapse; font-family: 'arial', sans-serif; height: 10px; width: 100%;" cl=
+ass=3D"vertical-padding"></td></tr></table><table border=3D"0" style=3D"bor=
+der-collapse: collapse; border-spacing: 0; " class=3D"activity"><tr><td wid=
+th=3D"50" align=3D"center" style=3D"border-collapse: collapse; font-family:=
+ 'arial', sans-serif; " class=3D"acitivty-left activity-icon"><img src=3D"h=
+ttps://kaymbu-production.s3.amazonaws.com/dailynote/activities.png" width=
+=3D"50" height=3D"50" border=3D"0" style=3D"border: 0; outline: none; text-=
+decoration: none;"></td><td width=3D"300" style=3D"color: #000000; border-c=
+ollapse: collapse; font-family: 'arial', sans-serif; font-size: 18px; font-=
+weight: bold; padding: 0px 10px 0px 10px;" class=3D"activity-middle activit=
+y-name">Activity</td><td width=3D"70" style=3D"border-collapse: collapse; f=
+ont-family: 'arial', sans-serif; " class=3D"activity-right"></td></tr><tr><=
+td colspan=3D"3" style=3D"border-collapse: collapse; font-family: 'arial', =
+sans-serif; height: 3px; width: 100%;" class=3D"vertical-padding inner"></t=
+d></tr><tr><td width=3D"50" valign=3D"top" style=3D"border-collapse: collap=
+se; font-family: 'arial', sans-serif; font-size: 11px; font-weight: bold; m=
+so-table-lspace: 0pt; color: #666666; mso-table-rspace: 0pt;" class=3D"acti=
+vity-left activity-time">9:02am</td><td width=3D"300" colspan=3D"2" style=
+=3D"border-collapse: collapse; font-family: 'arial', sans-serif; font-size:=
+ 13px; font-weight: bold; padding: 0px 10px 0px 10px;" class=3D"activity-mi=
+ddle activity-result">Small Group</td></tr><tr><td colspan=3D"3" style=3D"b=
+order-collapse: collapse; font-family: 'arial', sans-serif; height: 3px; wi=
+dth: 100%;" class=3D"vertical-padding inner"></td></tr><tr><td width=3D"50"=
+ style=3D"border-collapse: collapse; font-family: 'arial', sans-serif; " cl=
+ass=3D"activity-left"></td><td width=3D"300" colspan=3D"2" style=3D"border-=
+collapse: collapse; color: #000; font-family: 'arial', sans-serif; font-siz=
+e: 13px; padding: 0px 10px 0px 10px;" class=3D"activity-middle activity-not=
+es">Andrea went into the pod and set up cleaning stations for washing anima=
+ls.  There was splashing, dunking and washing involved.     </td></tr><tr><=
+td colspan=3D"3" style=3D"border-collapse: collapse; font-family: 'arial', =
+sans-serif; height: 3px; width: 100%;" class=3D"vertical-padding inner"></t=
+d></tr><tr><td width=3D"50" valign=3D"top" style=3D"border-collapse: collap=
+se; font-family: 'arial', sans-serif; font-size: 11px; font-weight: bold; m=
+so-table-lspace: 0pt; color: #666666; mso-table-rspace: 0pt;" class=3D"acti=
+vity-left activity-time">1:12pm</td><td width=3D"300" colspan=3D"2" style=
+=3D"border-collapse: collapse; font-family: 'arial', sans-serif; font-size:=
+ 13px; font-weight: bold; padding: 0px 10px 0px 10px;" class=3D"activity-mi=
+ddle activity-result">Outdoor Time</td></tr><tr><td colspan=3D"3" style=3D"=
+border-collapse: collapse; font-family: 'arial', sans-serif; height: 3px; w=
+idth: 100%;" class=3D"vertical-padding inner"></td></tr><tr><td width=3D"50=
+" style=3D"border-collapse: collapse; font-family: 'arial', sans-serif; " c=
+lass=3D"activity-left"></td><td width=3D"300" colspan=3D"2" style=3D"border=
+-collapse: collapse; color: #000; font-family: 'arial', sans-serif; font-si=
+ze: 13px; padding: 0px 10px 0px 10px;" class=3D"activity-middle activity-no=
+tes">Emilia spent outside time playing with Mia.  They were using wagons an=
+d running with them up and down the sidewalk. Then they went to go play in =
+the sandbox where they made a cake with Andrea.</td></tr><tr><td colspan=3D=
+"3" style=3D"border-collapse: collapse; font-family: 'arial', sans-serif; h=
+eight: 3px; width: 100%;" class=3D"vertical-padding inner"></td></tr></tabl=
+e><table style=3D"border-collapse: collapse; border-spacing: 0; width: 100%=
+;" class=3D"divider"><tr><td style=3D"border-collapse: collapse; font-famil=
+y: 'arial', sans-serif; height: 10px; width: 100%;" class=3D"vertical-paddi=
+ng"></td></tr><tr><td style=3D"background-color: #f2f2f2; border-collapse: =
+collapse; font-family: 'arial', sans-serif; height: 1px; padding: 0px;" cla=
+ss=3D"spacer"></td></tr><tr><td style=3D"border-collapse: collapse; font-fa=
+mily: 'arial', sans-serif; height: 10px; width: 100%;" class=3D"vertical-pa=
+dding"></td></tr></table><table style=3D"border-collapse: collapse; border-=
+spacing: 0; width: 100%;" class=3D"heading"><tr><td style=3D"border-collaps=
+e: collapse; color: #229522; font-family: 'arial', sans-serif; padding: 0px=
+ 15px; padding-top: 5px;" class=3D"heading-recipients-label">Note recipient=
+s:</td></tr><tr><td style=3D"border-collapse: collapse; font-family: 'arial=
+', sans-serif; height: 3px; padding: 0px 15px; width: 100%;" class=3D"verti=
+cal-padding inner"></td></tr><tr><td style=3D"border-collapse: collapse; fo=
+nt-family: 'arial', sans-serif; font-size: 12px; padding: 0px 15px; padding=
+-top: 5px;" class=3D"heading-recipients"><a href=3D"mailto:kdkusano@gmail.c=
+om" style=3D"-webkit-text-size-adjust: 100%;">kdkusano@gmail.com</a></td></=
+tr><tr><td style=3D"border-collapse: collapse; font-family: 'arial', sans-s=
+erif; height: 3px; padding: 0px 15px; width: 100%;" class=3D"vertical-paddi=
+ng inner"></td></tr><tr><td style=3D"border-collapse: collapse; font-family=
+: 'arial', sans-serif; height: 10px; padding: 0px 15px; width: 100%;" class=
+=3D"vertical-padding"></td></tr></table></td></tr><tr><td style=3D"border-c=
+ollapse: collapse; font-family: 'arial', sans-serif; " class=3D"footer-cont=
+ainer"><div style=3D"width: 100%; height: 1px; border-bottom: 2px solid #17=
+9f9e; display: block;"></div><table width=3D"100%" cellspacing=3D"0" cellpa=
+dding=3D"10" border=3D"0"><tr><td align=3D"left" valign=3D"middle" style=3D=
+"padding: 20px 20px 10px 20px"><a href=3D"http://email.kaymbu.com/wf/click?=
+upn=3DYYLkTWwbY85Jfv4uwUB7DJ4578Mu09vCE4PStHttPuyGdV14g2f3ENQZH6VNvFRx_SUI9=
+Hpy7zlaI5kOjowDMH53XsxnUqCL9FM19-2BLiiLeYFgo0EU4ZwcB-2F4GtyquWTq-2FmQZuvDrx=
+lCOuf536RNiDr4L69R7UC4CAM12b-2FCDXd6XErv3guZQ0boJDDeomSoHPQ8Pfn-2BItgRDLjl-=
+2F8ESUDtfcIZMEIieb43Uf8RWfGTIQ-2BYZpXuq5IklXsySoLX49bVRWBdlvKutU1RKHXFckGzX=
+7xywdv7Q6PnB0VM67yaS9PtFafgo7lyVYK6FuEZGT9FBcKEjyg6HoR5dWlPlG-2BPgFoAkYfF25=
+OjOO0Ub27g7zXnzRCKE-2BhYfROwpnJFYo22k3MnZA0O7xvpAyZaGNYj0NU9-2FpI8rhb9enKpv=
+QvSpZrCkY9PGaQPZ4PlnGWIbN2nXOB0g3pPIUE4fYEyO9CQ-3D-3D" target=3D"_blank" st=
+yle=3D"text-decoration: none;"><img src=3D"https://d2k9f6tk478nyp.cloudfron=
+t.net/email/footer_logo_small-v1.png" width=3D"71" height=3D"35" border=3D"=
+0"></a></td><td align=3D"center" valign=3D"middle" width=3D"96" style=3D"pa=
+dding: 20px 15px 10px 5px"><a href=3D"http://email.kaymbu.com/wf/click?upn=
+=3DtlDvzXbmSgzJz0OvaxqmfI71zLdRJXRLCILpsgqPb13CpKwYRoPtoKE02JeYnVVq5Os8EYYS=
+6c7PCQQ7gCU7oVB-2FGvpXXR-2B34FxUTU3lKE8-3D_SUI9Hpy7zlaI5kOjowDMH53XsxnUqCL9=
+FM19-2BLiiLeYFgo0EU4ZwcB-2F4GtyquWTq-2FmQZuvDrxlCOuf536RNiDr4L69R7UC4CAM12b=
+-2FCDXd6XErv3guZQ0boJDDeomSoHPQ8Pfn-2BItgRDLjl-2F8ESUDtfcIZMEIieb43Uf8RWfGT=
+IQ-2BYZpXuq5IklXsySoLX49bVRWBdlvKutU1RKHXFckG8N6JM7nl43w5EN-2Bci-2FPogHubbO=
+aHJY9wB3jPGpIpu3mZ7SkWqUu6JgKPpz7orJ84X-2BO9nVTlz6QxIvpEXXcvWN0EAfMYabKAcgT=
+Mynl6KL0D-2BlQRrdAXDfJtvub-2FT6TEohoS1sssvSoZUo4Up4ya5AN7C9kCvjRKy4tziBSvZa=
+EhKajYwwrEZRzW6XswhYJdA-3D-3D" target=3D"_blank" style=3D"text-decoration: =
+none;"><img src=3D"https://d2k9f6tk478nyp.cloudfront.net/email/appstore-ios=
+-icon_small-v3.png" width=3D"96" height=3D"29" border=3D"0"></a></td><td al=
+ign=3D"left" valign=3D"middle" width=3D"96" style=3D"padding: 20px 15px 10p=
+x 5px"><a href=3D"http://email.kaymbu.com/wf/click?upn=3D9Ri0Q1DnHN6cvC20zP=
+AojxGcTZv2-2FV7RdmoSDfzydDzX02dhyeNr-2FvayH-2B9DwhdxzJ-2F1vxlfRZ3bDr9E5K5PL=
+FsqnKS6CFm0Jxoe8TEE97w-3D_SUI9Hpy7zlaI5kOjowDMH53XsxnUqCL9FM19-2BLiiLeYFgo0=
+EU4ZwcB-2F4GtyquWTq-2FmQZuvDrxlCOuf536RNiDr4L69R7UC4CAM12b-2FCDXd6XErv3guZQ=
+0boJDDeomSoHPQ8Pfn-2BItgRDLjl-2F8ESUDtfcIZMEIieb43Uf8RWfGTIQ-2BYZpXuq5IklXs=
+ySoLX49bVRWBdlvKutU1RKHXFckGwe7jsExYEXQCWrE7KQT62kV2kPtpVaxyMAwGdUBzrPSeAxP=
+GWkGk7dHXZWnHw0mJZwt66xmKUCG2AnVygsQsEeBeb3O6BNsZa30aSbHc6qF9tcxxVfXBP0U9LE=
+414qPYzkA7nMnTzEMIQGE-2FKztIagMh1zbgl0rE1Gj4dIxWKMSvLwWnZqDx44TQhj1rsGSfw-3=
+D-3D" target=3D"_blank" style=3D"text-decoration: none;"><img src=3D"https:=
+//d2k9f6tk478nyp.cloudfront.net/email/appstore-android-icon_small-v3.png" w=
+idth=3D"96" height=3D"29" border=3D"0"></a></td></tr></table></td></tr></ta=
+ble><div></div></td></tr></table>
+<img src=3D"http://email.kaymbu.com/wf/open?upn=3DSUI9Hpy7zlaI5kOjowDMH53Xs=
+xnUqCL9FM19-2BLiiLeYFgo0EU4ZwcB-2F4GtyquWTq-2FmQZuvDrxlCOuf536RNiDr4L69R7UC=
+4CAM12b-2FCDXd6XErv3guZQ0boJDDeomSoHPQ8Pfn-2BItgRDLjl-2F8ESUDtfcIZMEIieb43U=
+f8RWfGTIQ-2BYZpXuq5IklXsySoLX49bVRWBdlvKutU1RKHXFckG-2FD3GzHvuvQ3jLpQjxqUX8=
+8JoeejRSmbIDgwviH5QWcwsUPV-2B3b6gqyJHMJKB4WOa1wthGURhb2vG2IyLqXIpfMEGgkCLJ2=
+zGIoGPCEC2rXfwA-2BVijhHKpszM8VnASRQpsXUG8chLsuW6zPGB-2BPJhdvxPIThv2HSFU7B1A=
+sBF-2BRlaWfKrc8uCcoCBPkfSibWUw-3D-3D" alt=3D"" width=3D"1" height=3D"1" bor=
+der=3D"0" style=3D"height:1px !important;width:1px !important;border-width:=
+0 !important;margin-top:0 !important;margin-bottom:0 !important;margin-righ=
+t:0 !important;margin-left:0 !important;padding-top:0 !important;padding-bo=
+ttom:0 !important;padding-right:0 !important;padding-left:0 !important;"/>
+</body></html>
