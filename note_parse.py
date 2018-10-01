@@ -1,11 +1,8 @@
 import re
 from collections import namedtuple
 from datetime import datetime
-from io import BytesIO
 import pytz
 from typing import List, Tuple
-
-from lxml import etree
 
 
 Activity = namedtuple('Activity', ['first_name',
@@ -21,89 +18,111 @@ Nap = namedtuple('Nap', ['first_name',
                          'end_datetime'])
 
 
-def parse_gretchens_notes(email_payload: str) -> List[Tuple]:
+def parse_gretchens_notes(email_payload: str
+                          ) -> Tuple[List[Activity], List[Nap]]:
     """
     Parse out name, date, and activities from email
     :param email_payload: string of HTML email
     :return: attributes
     """
+    print('start parsing email')
     # TODO: Find a clever way to detect time zone
     time_zone = pytz.timezone('US/Eastern')
 
-    # remove screwy stuff...
+    # remove line breaks put in my gmail
     payload = re.sub('=(\r\n|\r|\n)', '', email_payload)
+    # do not allow line breaks within messages
+    payload = re.sub('(\r\n|\r|\n)', ' ', payload)
 
-    re_name = re.compile("(.*)'s Daily Note")
-    child_name = None
-    date = None
-    doc_string = BytesIO(payload.encode('utf-8'))
+    # get document attributes
+    child_name_re = re.search("class=3D\"heading-name\">(.*)'s Daily Note<",
+                              payload)
+    if child_name_re:
+        child_name = child_name_re.group(1)
+    else:
+        raise ValueError("Could not find child's name")
+
+    date_re = re.search("class=3D\"heading-date\">(.*?)<",
+                        payload)
+    if date_re:
+        date_str = re.sub('(rd|st|th)', '', date_re.group(1))
+        date_py = datetime.strptime(date_str, '%B %d, %Y')
+        date = date_py.strftime('%Y-%m-%d')
+    else:
+        raise ValueError("Could not find date")
+
+    # get activities and notes
+    act_split = payload.split('class=3D"activity-middle activity-name">')
+    re_begin = re.compile("^(.*?)</td>")
+    re_result = re.compile("class=3D\"activity-middle activity-result\">"
+                           "(.*?)</td>")
+    re_note = re.compile("class=3D\"activity-middle activity-notes\">"
+                         "(.*?)</td>")
     activities = []
-    this_activity_name = None
-    last_activity_name = None
-    this_activity_time = None
-    this_activity_result = None
-    this_activity_notes = None
-    date_py = None
-    for event, elem in etree.iterparse(doc_string,
-                                       events=("start",),
-                                       html=True):
-        if elem.tag != 'td' or elem.text is None or 'class' not in elem.attrib:
-            continue
-        # print('{}: {}'.format(event, elem.text))
+    for act_str in act_split[1:]:
+        activity_name = re_begin.search(act_str).group(1)
+        print('ACTIVITY:', activity_name)
 
-        attrib_class = elem.attrib['class']
-        text = elem.text
-        if attrib_class == '3D"heading-name"':
-            re_child_name = re_name.search(text)
-            if not re_child_name:
-                e_str = 'Could not parse child name from {}'
-                raise ValueError(e_str.format(text))
-            child_name, = re_child_name.groups()
-        elif attrib_class == '3D"heading-date"':
-            date_str = re.sub('(rd|st)', '', text)
-            date_py = datetime.strptime(date_str, '%B %d, %Y')
-            date = date_py.strftime('%Y-%m-%d')
-        elif attrib_class == '3D"activity-middle' and \
-                'activity-name' in elem.attrib:
-            last_activity_name = this_activity_name
-            this_activity_name = text
-        elif attrib_class == '3D"activity-left' and \
-                'activity-time' in elem.attrib:
-            # output last activity
-            if this_activity_time:
-                activities.append(Activity(child_name,
-                                           date,
-                                           last_activity_name
-                                           if last_activity_name is not None
-                                           else this_activity_name,
-                                           this_activity_time,
-                                           this_activity_result,
-                                           this_activity_notes))
-                this_activity_result = None
-                this_activity_notes = None
+        # remove out unwanted stuff
+        act_str = re_begin.sub('', act_str)
+        act_str = act_str.replace('</body></html>', '')
 
-            # parse this time
-            py_time = datetime.strptime(text, '%I:%M%p')
-            if date_py is None:
-                e_str = 'Activity time found before date?'
-                raise ValueError(e_str)
-            this_activity_time = _make_iso_time(py_time,
-                                                date_py,
-                                                time_zone)
-        elif attrib_class == '3D"activity-middle' and \
-                'activity-result' in elem.attrib:
-            this_activity_result = text
-        elif attrib_class == '3D"activity-middle' and \
-                'activity-notes' in elem.attrib:
-            this_activity_notes = text
+        if activity_name.lower() != 'note':
 
-    # output final
-    activities.append(Activity(child_name,
-                               date,
-                               this_activity_name,
-                               this_activity_time,
-                               this_activity_result,
-                               this_activity_notes))
+            act_sub_split = act_str.split(
+                "class=3D\"activity-left activity-time\">"
+            )
+            for act_sub in act_sub_split[1:]:
+                time_str = re_begin.search(act_sub).group(1)
+                # parse this time
+                py_time = datetime.strptime(time_str, '%I:%M%p')
+                if date_py is None:
+                    e_str = 'Activity time found before date?'
+                    raise ValueError(e_str)
+                activity_time = _make_iso_time(py_time,
+                                               date_py,
+                                               time_zone)
+                print('Activity time:', activity_time)
+                # result
+                activity_result = re_result.search(act_sub).group(1)
+                print('Activity result:', activity_result)
+                activity_note_re = re_note.search(act_sub)
+                if activity_note_re:
+                    activity_note = activity_note_re.group(1)
+                    print('Activity note:', activity_note)
+                else:
+                    activity_note = None
+
+                activities.append(Activity(first_name=child_name,
+                                           date=date,
+                                           activity=activity_name,
+                                           datetime=activity_time,
+                                           result=activity_result,
+                                           notes=activity_note))
+
+        else:
+            # notes are split by result, not time
+            act_sub_split = act_str.split(
+                "class=3D\"activity-middle activity-result\">"
+            )
+            activity_time = None
+            for act_sub in act_sub_split[1:]:
+                activity_result = re_begin.search(act_sub).group(1)
+                print('Note result:', activity_result)
+                activity_note_re = re_note.search(act_sub)
+                if activity_note_re:
+                    activity_note = activity_note_re.group(1)
+                    print('Note note:', activity_note)
+                else:
+                    activity_note = None
+                activities.append(Activity(first_name=child_name,
+                                           date=date,
+                                           activity=activity_name,
+                                           datetime=activity_time,
+                                           result=activity_result,
+                                           notes=activity_note))
+
+        print('---')
 
     # parse naps
     re_nap = re.compile('([0-9]+:[0-9]+ (AM|PM)) - ([0-9]+:[0-9]+ (AM|PM))')
@@ -112,7 +131,7 @@ def parse_gretchens_notes(email_payload: str) -> List[Tuple]:
         if act.activity.upper() == 'NAP':
             re_nap_search = re_nap.search(act.result)
             if re_nap_search is None:
-                e_str = 'No nap time found in string: {}'.format(text)
+                e_str = 'No nap time found in string: {}'.format(act.result)
                 raise ValueError(e_str)
             nap_start, nap_end = re_nap_search.group(1), re_nap_search.group(3)
             nap_start_time = _make_iso_time(
