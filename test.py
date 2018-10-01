@@ -3,8 +3,9 @@ import json
 import subprocess
 from unittest import TestCase
 
-from note_parse import parse_gretchens_notes, Activity
+from note_parse import parse_gretchens_notes
 from lambda_function import lambda_handler
+
 
 def _load_email(test_path: str) -> str:
     with open(test_path, 'r') as test_file:
@@ -50,7 +51,6 @@ class TestNoteParse(TestCase):
                           '2018-09-21T14:05:00-04:00'),
                          naps[0])
 
-
     def test_note_parse2(self):
         """
         A test case that includes a note
@@ -72,7 +72,6 @@ class TestNoteParse(TestCase):
                           'day you can still come on Monday for pictures.  '
                           'Thank you!=20  '),
                          activities[0])
-
 
     def test_lambda_function(self):
         """
