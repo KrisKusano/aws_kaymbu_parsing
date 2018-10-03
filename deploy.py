@@ -19,7 +19,12 @@ DEPLOY_NAME = 'deploy'
 # files to copy to distribution
 SRC_LIST = [
     "lambda_function.py",
-    "note_parse.py"
+    "note_parse.py",
+    "sdb_modify_domain.py"
+]
+
+SITE_PACKAGES = [
+    "pytz"
 ]
 
 def get_logger():
@@ -49,6 +54,7 @@ def deploy():
 
     deploy_dir = os.path.join(this_dir, DEPLOY_NAME)
     clean_deploy(deploy_dir)
+    os.makedirs(deploy_dir)
 
     # find site packages
     env_dir = os.path.dirname(sys.executable)
@@ -56,29 +62,24 @@ def deploy():
     assert os.path.exists(site_package_dir)
 
     get_logger().info("Copying site packages...")
-    shutil.copytree(site_package_dir, deploy_dir)
-
-    # clean up deploy files
-    get_logger().info("Cleaning unwanted files out of deploy directory")
-    for root_dir, sub_dirs, files in os.walk(deploy_dir):
-        if root_dir.endswith('__pycache__') or root_dir.endswith('lxml'):
-            if os.path.exists(root_dir):
-                shutil.rmtree(root_dir)
-
-    get_logger().info("Copy AWS-compatible lxml")
-
+    site_packages = os.listdir(site_package_dir)
+    for site_pack in site_packages:
+        if site_pack in SITE_PACKAGES:
+            src_dir = os.path.join(site_package_dir, site_pack)
+            dst_dir = os.path.join(deploy_dir, site_pack)
+            shutil.copytree(src_dir, dst_dir)
 
     get_logger().info("Copying source files...")
     for src_file in SRC_LIST:
         shutil.copy(os.path.join(this_dir, src_file), deploy_dir)
 
     get_logger().info("Zipping")
-    zip_path = os.path.join(this_dir, DEPLOY_NAME + '.zip')
-    if os.path.exists(zip_path):
+    zip_path_out = os.path.join(this_dir, DEPLOY_NAME + '.zip')
+    if os.path.exists(zip_path_out):
         get_logger().info('Destoying previous {}.zip'.format(DEPLOY_NAME))
     re_str = ''.join(['^', DEPLOY_NAME, '(\\\\|/)'])
     get_logger().info('Making deploy file {}.zip'.format(DEPLOY_NAME))
-    with zipfile.ZipFile(zip_path, 'w', zipfile.ZIP_DEFLATED) as zip_out:
+    with zipfile.ZipFile(zip_path_out, 'w', zipfile.ZIP_DEFLATED) as zip_out:
         for dir_root, sub_dirs, files in os.walk(DEPLOY_NAME):
             # print((dir_root, sub_dirs, files))
             for file in files:
@@ -93,7 +94,7 @@ def deploy():
                     zip_out.write(os.path.join(dir_root, file),
                                   zip_path)
 
-    upload_to_s3(zip_path)
+    upload_to_s3(zip_path_out)
 
     get_logger().info('Cleaning up temp directory {}'.format(deploy_dir))
     clean_deploy(deploy_dir)

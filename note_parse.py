@@ -1,9 +1,9 @@
 import re
 from collections import namedtuple
 from datetime import datetime
-import pytz
 from typing import List, Tuple
 
+import pytz
 
 Activity = namedtuple('Activity', ['first_name',
                                    'date',

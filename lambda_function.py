@@ -1,6 +1,7 @@
 import urllib.parse
-import boto3
 from typing import List
+
+import boto3
 
 from note_parse import parse_gretchens_notes, Activity, Nap
 from sdb_modify_domain import SDB_DOMAIN
