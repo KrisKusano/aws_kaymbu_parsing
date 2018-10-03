@@ -45,7 +45,7 @@ def parse_gretchens_notes(email_payload: str
     date_re = re.search("class=3D\"heading-date\">(.*?)<",
                         payload)
     if date_re:
-        date_str = re.sub('(rd|st|th)', '', date_re.group(1))
+        date_str = re.sub('(rd|st|th|nd)', '', date_re.group(1))
         date_py = datetime.strptime(date_str, '%B %d, %Y')
         date = date_py.strftime('%Y-%m-%d')
     else:
@@ -58,6 +58,8 @@ def parse_gretchens_notes(email_payload: str
                            "(.*?)</td>")
     re_note = re.compile("class=3D\"activity-middle activity-notes\">"
                          "(.*?)</td>")
+    # (lower case) headings without time
+    non_time_headings = ['note', 'supplies']
     activities = []
     for act_str in act_split[1:]:
         activity_name = re_begin.search(act_str).group(1)
@@ -67,7 +69,7 @@ def parse_gretchens_notes(email_payload: str
         act_str = re_begin.sub('', act_str)
         act_str = act_str.replace('</body></html>', '')
 
-        if activity_name.lower() != 'note':
+        if activity_name.lower() not in non_time_headings:
 
             act_sub_split = act_str.split(
                 "class=3D\"activity-left activity-time\">"
