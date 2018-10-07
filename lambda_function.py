@@ -76,11 +76,6 @@ def put_sdb_activities(sdb: boto3.client,
                     'Replace': True
                 },
                 {
-                    'Name': 'start_datetime',
-                    'Value': act.datetime,
-                    'Replace': True
-                },
-                {
                     'Name': 'result',
                     'Value': act.result,
                     'Replace': True
@@ -90,6 +85,12 @@ def put_sdb_activities(sdb: boto3.client,
             attributes.append({
                 'Name': 'notes',
                 'Value': act.notes,
+                'Replace': True
+            })
+        if act.datetime:
+            attributes.append({
+                'Name': 'start_datetime',
+                'Value': act.datetime,
                 'Replace': True
             })
 
