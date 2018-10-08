@@ -27,4 +27,18 @@ class TestGetData(TestCase):
                 self.week_data['Items'].append(item)
 
     def testNapDurations(self):
-        compute_nap_times(self.week_data['Items'])
+        ans = [
+            (datetime(2018, 10, 1, 12, 55),
+             3600 + 10 * 60),
+            (datetime(2018, 10, 2, 13, 00),
+             3600 + 35 * 60),
+            (datetime(2018, 10, 3, 12, 55),
+             45 * 60),
+            (datetime(2018, 10, 4, 13, 00),
+             3600 + 15 * 60),
+            (datetime(2018, 10, 5, 12, 45),
+             3600 + 40 * 60)
+
+        ]
+        naps = compute_nap_times(self.week_data['Items'])
+        self.assertEqual(ans, naps)
