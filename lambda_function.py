@@ -25,8 +25,7 @@ def lambda_handler(event, context):
 def lambda_worker(bucket: str, key: str) -> None:
     try:
         response = s3.get_object(Bucket=bucket, Key=key)
-        # print("CONTENT TYPE: " + response['ContentType'])
-        # return response['ContentType']
+        print('Load email from bucket {}, key {}'.format(bucket, key))
     except Exception as e:
         print(e)
         print('Error getting object {} from bucket {}.'.format(key, bucket))
