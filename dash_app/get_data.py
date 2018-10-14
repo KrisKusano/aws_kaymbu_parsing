@@ -75,4 +75,7 @@ def compute_nap_times(items: List[Dict]) -> Dict[str, float]:
         nap_out.append((nap_start,
                         nap_diff.days * 24 * 3600 + nap_diff.seconds))
 
+    # remove duplicate nap entries (can happen by mistaken entry)
+    nap_out = list(set(nap_out))
+
     return sorted(nap_out)
