@@ -4,7 +4,7 @@ from unittest import TestCase
 from datetime import datetime
 import re
 
-from ..get_data import compute_nap_times
+from ..get_data import compute_nap_times, get_activty_table
 
 
 def get_test_week_data():
@@ -47,3 +47,7 @@ class TestGetData(TestCase):
         ]
         naps = compute_nap_times(self.week_data['Items'])
         self.assertEqual(ans, naps)
+
+    def testActivityTable(self):
+        table = get_activty_table(self.week_data['Items'])
+        self.assertEqual(6, len(table.children))

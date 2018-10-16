@@ -1,8 +1,12 @@
+import html as py_html
+import logging
 import re
-import dateutil.parser
 from datetime import datetime
 from typing import Dict, List
-import logging
+
+import dash_html_components as html
+import dateutil.parser
+import pandas as pd
 
 
 def get_logger():
@@ -79,3 +83,36 @@ def compute_nap_times(items: List[Dict]) -> Dict[str, float]:
     nap_out = list(set(nap_out))
 
     return sorted(nap_out)
+
+
+def df_from_items(items: List[Dict]) -> pd.DataFrame:
+    """
+    Table from item list
+    """
+    rows_out = []
+    for item in items:
+        try:
+            rows_out.append({x['Name']: x['Value'] for x in item['Attributes']})
+        except (TypeError, KeyError):
+            logging.debug('Malformed items list: {}'.format(items))
+            break
+    return pd.DataFrame(rows_out)
+
+
+def html_table_from_df(df: pd.DataFrame) -> html.Table:
+    return html.Table(
+        [html.Tr([html.Th(col) for col in df.columns])] +
+        [html.Tr([html.Td(df.iloc[i][col]) for col in df.columns])
+                 for i in range(len(df))]
+    )
+
+
+def get_activty_table(items: List[Dict]) -> List:
+    df = df_from_items(_get_item_by_activity(items,
+                                             'Activity'))
+    df['Date'] = df['start_datetime'].apply(
+        lambda x: dateutil.parser.parse(x).strftime('%Y-%m-%d %H:%M %p')
+    )
+    df['Topic'] = df['result']
+    df['Description'] = df['notes'].apply(lambda x: py_html.unescape(x))
+    return html_table_from_df(df.loc[:, ['Date', 'Topic', 'Description']])

@@ -6,15 +6,18 @@ import dash
 import dash_core_components as dcc
 import dash_html_components as html
 
-from get_data import compute_nap_times
-from test.test_get_data import get_test_week_data
+from .get_data import compute_nap_times, get_activty_table
+from .test.test_get_data import get_test_week_data
 
 external_stylesheets = ['https://codepen.io/chriddyp/pen/bWLwgP.css']
 
 
 def create_app(is_test: bool=False):
     app = dash.Dash(__name__, external_stylesheets=external_stylesheets)
+    app.title = 'Daycare Activity Log'
     app.config['TESTING'] = is_test
+    # required if callbacks are in a different file
+    # app.config.suppress_callback_exceptions = True
 
     if is_test:
         start_date = dt(2018, 10, 1)
@@ -23,14 +26,24 @@ def create_app(is_test: bool=False):
 
     app.layout = html.Div(children=[
         html.H1(children="Emilia's Gretchen's House Activities"),
-        dcc.DatePickerSingle(
-            id='date-picker-week',
-            date=start_date,
-            min_date_allowed=dt(2018, 9, 1),
-            max_date_allowed=dt.today(),
-            initial_visible_month=dt.today()
-        ),
-        dcc.Graph(id='nap-time-bar-graph')
+        html.H2(children="Naps"),
+        html.Div([
+            html.Div(children="Week Date:",
+                     className="two columns"),
+            html.Div([
+                dcc.DatePickerSingle(
+                    id='date-picker-week',
+                    date=start_date,
+                    min_date_allowed=dt(2018, 9, 1),
+                    max_date_allowed=dt.today(),
+                    initial_visible_month=dt.today()
+                )],
+                className="two columns"
+            )
+        ], className="row"),
+        dcc.Graph(id='nap-time-bar-graph'),
+        html.H2(children="Activity Notes"),
+        html.Table(id='activity-table')
     ])
 
     @app.callback(
@@ -75,9 +88,15 @@ def create_app(is_test: bool=False):
             }
         }
 
-    return app
+    @app.callback(
+        dash.dependencies.Output('activity-table', 'children'),
+        [dash.dependencies.Input('date-picker-week', 'date')]
+    )
+    def update_activity_table(date):
+        if app.config['TESTING']:
+            data = get_test_week_data()
+        else:
+            raise NotImplementedError('no real data yet')
+        return get_activty_table(data['Items'])
 
-if __name__ == '__main__':
-    logging.basicConfig(level='INFO')
-    app = create_app(is_test=True)
-    app.run_server(debug=True)
+    return app
