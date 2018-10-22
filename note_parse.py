@@ -4,6 +4,7 @@ from datetime import datetime
 from typing import List, Tuple
 
 import pytz
+import requests
 
 Activity = namedtuple('Activity', ['first_name',
                                    'date',
@@ -29,20 +30,17 @@ def parse_gretchens_notes(email_payload: str
     # TODO: Find a clever way to detect time zone
     time_zone = pytz.timezone('US/Eastern')
 
-    # remove line breaks put in my gmail
-    payload = re.sub('=(\r\n|\r|\n)', '', email_payload)
-    # do not allow line breaks within messages
-    payload = re.sub('(\r\n|\r|\n)', ' ', payload)
+    payload = _remove_line_breaks(email_payload)
 
     # get document attributes
-    child_name_re = re.search("class=3D\"heading-name\">(.*)'s Daily Note<",
+    child_name_re = re.search("class=\"heading-name\">(.*)'s Daily Note<",
                               payload)
     if child_name_re:
         child_name = child_name_re.group(1)
     else:
         raise ValueError("Could not find child's name")
 
-    date_re = re.search("class=3D\"heading-date\">(.*?)<",
+    date_re = re.search("class=\"heading-date\">(.*?)<",
                         payload)
     if date_re:
         date_str = re.sub('(rd|st|th|nd)', '', date_re.group(1))
@@ -52,11 +50,11 @@ def parse_gretchens_notes(email_payload: str
         raise ValueError("Could not find date")
 
     # get activities and notes
-    act_split = payload.split('class=3D"activity-middle activity-name">')
+    act_split = payload.split('class="activity-middle activity-name">')
     re_begin = re.compile("^(.*?)</td>")
-    re_result = re.compile("class=3D\"activity-middle activity-result\">"
+    re_result = re.compile("class=\"activity-middle activity-result\">"
                            "(.*?)</td>")
-    re_note = re.compile("class=3D\"activity-middle activity-notes\">"
+    re_note = re.compile("class=\"activity-middle activity-notes\">"
                          "(.*?)</td>")
     # (lower case) headings without time
     non_time_headings = ['note', 'supplies']
@@ -72,7 +70,7 @@ def parse_gretchens_notes(email_payload: str
         if activity_name.lower() not in non_time_headings:
 
             act_sub_split = act_str.split(
-                "class=3D\"activity-left activity-time\">"
+                "class=\"activity-left activity-time\">"
             )
             for act_sub in act_sub_split[1:]:
                 time_str = re_begin.search(act_sub).group(1)
@@ -105,7 +103,7 @@ def parse_gretchens_notes(email_payload: str
         else:
             # notes are split by result, not time
             act_sub_split = act_str.split(
-                "class=3D\"activity-middle activity-result\">"
+                "class=\"activity-middle activity-result\">"
             )
             activity_time = None
             for act_sub in act_sub_split[1:]:
@@ -150,6 +148,58 @@ def parse_gretchens_notes(email_payload: str
                             nap_start_time,
                             nap_end_time))
     return activities, naps
+
+
+def parse_gretchens_picture(email: str):
+    payload = _remove_line_breaks(email)
+    re_date = re.compile('class="date">(.*?)</td>')
+    re_date_search = re_date.search(payload)
+    if re_date_search:
+        this_date = re_date_search.group(1)
+    else:
+        raise ValueError('Could not find date in picture email')
+
+    date = datetime.strptime(this_date, "%B %d, %Y")
+
+    re_download_link = re.compile(
+        '<a href="(.*?)" target=.*><img src=".*/download_btn'
+    )
+    download_search = re_download_link.search(payload)
+    if download_search:
+        download_url = download_search.group(1)
+        print('Found download link')
+    else:
+        raise ValueError("Could not find download link in picture email")
+
+    download_page = requests.get(download_url)
+    if download_page.status_code != 200:
+        raise ValueError('Could not access page at {}'.format(download_url))
+    else:
+        print('Downloaded page {}'.format(download_url))
+
+    # find media ids
+    download_txt = download_page.text
+    re_media = re.compile('<div data-type=".*" data-id="(.*?)"')
+    media_search = re_media.search(download_txt)
+    if not media_search:
+        raise ValueError('No media found')
+
+    # download
+    base_url = "http://export.kaymbu.com/download/moments?{}&"
+    for media_id in media_search.groups():
+        this_url = base_url.format(media_id)
+        media_resp = requests.get(this_url)
+        if media_resp.status_code != 200:
+            e_str = 'Could not download media file {}'
+            raise ValueError(e_str.format(this_url))
+
+
+def _remove_line_breaks(body: str) -> str:
+    # remove line breaks
+    payload = re.sub('=(\r\n|\r|\n)', '', body)
+    # do not allow line breaks within messages
+    payload = re.sub('(\r\n|\r|\n)', ' ', payload)
+    return payload
 
 
 def _make_iso_time(time: datetime,

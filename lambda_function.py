@@ -1,3 +1,4 @@
+import email
 import urllib.parse
 from typing import List
 
@@ -31,10 +32,17 @@ def lambda_worker(bucket: str, key: str) -> None:
         print('Error getting object {} from bucket {}.'.format(key, bucket))
         raise e
 
-    # Parse email for activities
-    body = response['Body'].read()
     try:
-        activities, naps = parse_gretchens_notes(body.decode('utf-8'))
+        email_obj= email.message_from_bytes(response['Body'].read())
+        body = email_obj.get_payload(decode=True).decode('utf-8')
+    except Exception as e:
+        print(e)
+        print('Could not parse email')
+        raise e
+
+    # Parse email for activities
+    try:
+        activities, naps = parse_gretchens_notes(body)
     except Exception as e:
         print(e)
         print('Error parsing activities out of email')

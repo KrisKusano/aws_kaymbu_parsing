@@ -3,14 +3,14 @@ import json
 import subprocess
 from unittest import TestCase
 
-from note_parse import parse_gretchens_notes
+from note_parse import parse_gretchens_notes, parse_gretchens_picture
 from lambda_function import lambda_handler
 
 
 def _load_email(test_path: str) -> str:
     with open(test_path, 'r') as test_file:
         mail = email.message_from_file(test_file)
-    return mail.get_payload()
+    return mail.get_payload(decode=True).decode('utf-8')
 
 
 class TestNoteParse(TestCase):
@@ -96,3 +96,7 @@ class TestNoteParse(TestCase):
             event = json.load(test_event)
 
         lambda_handler(event, None)
+
+    def test_weekly_picture(self):
+        mail = _load_email('test_weekly_picture')
+        parse_gretchens_picture(mail)

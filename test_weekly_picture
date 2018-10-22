@@ -1,0 +1,299 @@
+Return-Path: <bounces+616114-e01b-emilias.notes=kriskusano.com@email.kaymbu.com>
+Received: from o1.email.kaymbu.com (o1.email.kaymbu.com [167.89.8.228])
+ by inbound-smtp.us-east-1.amazonaws.com with SMTP id 8q1vgbmgbhq35r5djkr85llcbiuufpc2khqufm81
+ for emilias.notes@kriskusano.com;
+ Fri, 19 Oct 2018 18:52:45 +0000 (UTC)
+X-SES-Spam-Verdict: PASS
+X-SES-Virus-Verdict: PASS
+Received-SPF: pass (spfCheck: domain of email.kaymbu.com designates 167.89.8.228 as permitted sender) client-ip=167.89.8.228; envelope-from=bounces+616114-e01b-emilias.notes=kriskusano.com@email.kaymbu.com; helo=o1.email.kaymbu.com;
+Authentication-Results: amazonses.com;
+ spf=pass (spfCheck: domain of email.kaymbu.com designates 167.89.8.228 as permitted sender) client-ip=167.89.8.228; envelope-from=bounces+616114-e01b-emilias.notes=kriskusano.com@email.kaymbu.com; helo=o1.email.kaymbu.com;
+ dkim=pass header.i=@email.kaymbu.com;
+ dmarc=pass header.from=inbox.kaymbu.com;
+X-SES-RECEIPT: AEFBQUFBQUFBQUFHYnY4VDlqblV1cDJwQUR1V0FiVEVsN0NIdDlrRnh2M211eTJBT2VqT3NyQnoxYUpRek9oZFlTdkthY254OUJidThLalkzbzBYUGJaYW53OGNqcnZPcG1WWWV0cG12UHhjS3NSRjNYZ2xjd3VDcW13cnR4NTVxSjd6VEJ1SHUwTnNHQmgvWS9aZVAwWGdYMVZsaFhCUUpFaDZ0MWVxYTlxNkcxdmtNVlhFenFTNEJaSG01OFNFWUhPMk9xOTNaMFZ6ckwrc2xDNEg4UlI3RjgzbVZzUURxb1hhakVITXNtdW12dE0rNDIvb2ZwbkMrY1ZmREJSanR0K3p0MmNYRmIwSHBNUDRtamFidHN0NkhYdkt1NWdQUlUzdEY3UEdYSFg2bXQrL3VtNmZ5Ri9kdlMzYnJWOTY4T2F4RXZXdmFmNmFCVjFrYktIWVlTRTgrMHgvN3ZFSks5d3VKV0NnT0g4TjlydUs2Wk9pdkVBPT0=
+X-SES-DKIM-SIGNATURE: a=rsa-sha256; q=dns/txt; b=GZep7Q1o2UAWfEB1g1ESx7AWARp7KXvBQ3ftti48PHsnuH9gJvYn5RKYfp4QMCHG3EJNksW6/IEJ3kADujHGTNNixVSrQAbPX0HBCkr9z600DyVZqUMb4g1TduSwk3Ja+/cECWgiO0wNwKvGh/VytEc/+flrRUEm5w59UDJrX7Y=; c=relaxed/simple; s=ug7nbtf4gccmlpwj322ax3p6ow6yfsug; d=amazonses.com; t=1539975165; v=1; bh=dfqv8d+l09F5t63MREYnFKKeLwHOZc7fESPWZ2vP6oU=; h=From:To:Cc:Bcc:Subject:Date:Message-ID:MIME-Version:Content-Type:X-SES-RECEIPT;
+DKIM-Signature: v=1; a=rsa-sha1; c=relaxed/relaxed; 
+	d=email.kaymbu.com; 
+	h=content-transfer-encoding:content-type:from:mime-version:to:subject; 
+	s=smtpapi; bh=3e1rDgYZaLBWgU5eqDHI3k/fVBg=; b=I9WzZjnqNsq7YPu+Hl
+	AReqdrEen4AiDKqaSyL5/gFizkb/L445gDxtZnenpkBVGA9jvYLCQoVa+Mnknh84
+	+pGYN8oiqptmffACCfRmmCZUSE1ETAwy/S6k70dER2g3xRf8RIbCKTN5dRwV4ucA
+	86vF6RAi0GIgrCOKbd7Db8qow=
+Received: by filter0136p3las1.sendgrid.net with SMTP id filter0136p3las1-801-5BCA27FC-23
+        2018-10-19 18:52:44.72175983 +0000 UTC m=+77402.430839035
+Received: from NjE2MTE0 (ec2-54-196-103-61.compute-1.amazonaws.com [54.196.103.61])
+	by ismtpd0040p1mdw1.sendgrid.net (SG) with HTTP id HKIS4lINSBuNmYXoULJMsw
+	Fri, 19 Oct 2018 18:52:44.662 +0000 (UTC)
+Content-Transfer-Encoding: quoted-printable
+Content-Type: text/html; charset=UTF-8
+Date: Fri, 19 Oct 2018 18:52:44 +0000 (UTC)
+From: "Terrace Toddlers" <cls5b47c424db8f39f25f3c0a2a@inbox.kaymbu.com>
+Mime-Version: 1.0
+To: emilias.notes@kriskusano.com
+Message-ID: <HKIS4lINSBuNmYXoULJMsw@ismtpd0040p1mdw1.sendgrid.net>
+Subject: Weekly Picture
+X-SG-EID: FdccIQ9V23aARIJ/eIhXhQI3B8dKqMZ+vScTjemO8IF9By3osIaYtZViDxPmHjbBIhnlANzEAfVBvX
+ lyqCYZUAQq8Bg92yL87NPQdYdVJZ7VDHYhWlymYN1K5SpM7AQ/nmiNHLRQjRAVARgvDR75i+DhllmZ
+ pllXZEEGr6OuGuHAY6bETLPQi+r5nAjJvYx5UUatN9LyOFvGoes5WboGK9mfdHIArR4lNfqZlSqBkL
+ ap47Dt6FOYUUBTp/ooiSEEpNuWx1A+jM2s/y/OTmq3jg==
+X-SG-ID: dHx77kcKhV9g4TDVzq7oVadORk29GT63eMujmWNeV7hqVycuQZawL/OGCSTi6XrZoYq3SYXz8J6leD
+ AaUIXTpiWoiaBZxNZP+EBve40w+nK+5Ed/c7plyQSGwlHp7dCsrlvtdGWtxQNpx6k/6+gQQj0BUZeA
+ F0IwM7/iwV0nTwvrvjudfS4OPEVd5QNiMUSv
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.=
+w3.org/TR/html4/loose.dtd"><html lang=3D"en" xmlns=3D"http://www.w3.org/199=
+9/xhtml"></html><head><meta charset=3D"utf-8"/><meta name=3D"viewport" cont=
+ent=3D"width=3Ddevice-width"/><meta http-equiv=3D"X-UA-Compatible" content=
+=3D"IE=3Dedge"/><title>Email From Kaymbu</title><style type=3D"text/css">/*=
+ ensure that clients don't add any padding or spaces around the email desig=
+n and allow us to style emails for the entire width of the preview pane */
+body,
+#bodyTable {
+  height:100% !important;
+  width:100% !important;
+  margin:0;
+  padding:0;
+}
+
+/* Ensures Webkit- and Windows-based clients don't automatically resize the=
+ email text. */
+body,
+table,
+td,
+p,
+a,
+li,
+blockquote {
+  -ms-text-size-adjust:100%;
+  -webkit-text-size-adjust:100%;
+}
+
+/* Forces Yahoo! to display emails at full width */
+.thread-item.expanded .thread-body .body,
+.msg-body {
+  width: 100% !important;
+  display: block !important;
+}
+
+/* Forces Hotmail to display emails at full width */
+.ReadMsgBody,
+.ExternalClass {
+  width: 100%;
+  background-color: #f4f4f4;
+}
+
+/* Forces Hotmail to display normal line spacing. */
+.ExternalClass,
+.ExternalClass p,
+.ExternalClass span,
+.ExternalClass font,
+.ExternalClass td,
+.ExternalClass div {
+  line-height:100%;
+}
+
+/* Resolves webkit padding issue. */
+table {
+  border-spacing:0;
+}
+
+/* Resolves the Outlook 2007, 2010, and Gmail td padding issue, and removes=
+ spacing around tables that Outlook adds. */
+table,
+td {
+  border-collapse:collapse;
+  mso-table-lspace:0pt;
+  mso-table-rspace:0pt;
+}
+
+/* Corrects the way Internet Explorer renders resized images in emails. */
+img {
+-ms-interpolation-mode: bicubic;
+}
+
+/* Ensures images don't have borders or text-decorations applied to them by=
+ default. */
+img,
+a img {
+  border:0;
+  outline:none;
+  text-decoration:none;
+}
+
+/* Styles Yahoo's auto-sensing link color and border */
+.yshortcuts a {
+  border-bottom: none !important;
+}
+
+/* Styles the tel URL scheme */
+a[href^=3Dtel],
+.mobile_link,
+.mobile_link a {
+  color:#222222 !important;
+  text-decoration: underline !Important;
+}
+
+
+/* Apple Mail doesn't support max-width, so we use media queries to constra=
+in the email container width. */
+@media only screen and (min-width: 601px) {
+  .email-container {
+    width: 440px !important;
+  }
+}
+
+/* Custom Kaymbu styles -- these are for reference - will not work unless a=
+ css inliner is used
+body {
+  font-family: arial, sans-serif;
+}
+
+a:link, a:visited, a:hover, a:active {
+  color: #9eb21b;
+}
+
+.feedback a:link,
+.feedback a:visited,
+.feedback a:hover,
+.feedback a:active {
+  color: #ffffff;
+  font-size: 20px;
+}
+
+.light-grey {
+  background-color:#f2f2f2 !important;
+}
+
+.spacer-20px {
+  width:100%;
+  padding-bottom: 20px;
+}
+
+.spacer-5px {
+  width: 100%;
+  padding-bottom: 5px;
+}
+
+.spacer-20px, .spacer-5px {
+  border: none !important;
+}
+*/
+</style></head><body leftmargin=3D"0" topmargin=3D"0" marginwidth=3D"0" mar=
+ginheight=3D"0" bgcolor=3D"#ffffff" style=3D"margin:0; padding:0; -webkit-t=
+ext-size-adjust:none; -ms-text-size-adjust:none;"><div></div><table cellpad=
+ding=3D"0" cellspacing=3D"0" border=3D"0" height=3D"100%" width=3D"100%" bg=
+color=3D"#ffffff" id=3D"bodyTable" style=3D"border-collapse: collapse;table=
+-layout: fixed;margin:0 auto;"><tr><td><table width=3D"440" cellpadding=3D"=
+0" cellspacing=3D"0" align=3D"center" bgcolor=3D"#f2f2f2" style=3D"border-c=
+olor: #cccccc;margin: 0px auto;width:440px" class=3D"email-container"><tr c=
+lass=3D"header-container"><td style=3D"border:1px solid #cccccc; border-bot=
+tom:0px"><table border=3D"0" width=3D"440" cellpadding=3D"0" cellspacing=3D=
+"0" class=3D"banner"><tr><td><img src=3D"https://d2k9f6tk478nyp.cloudfront.=
+net/5b47c333db8f39f25f3bc52d/emailheader-1534439871392.png" width=3D"440" s=
+tyle=3D"display:block" border=3D"0"/></td></tr></table><table border=3D"0" =
+width=3D"440" cellpadding=3D"10" cellspacing=3D"0" bgcolor=3D"#ffffff"><tr =
+class=3D"heading-text"><td colspan=3D"2" style=3D"font-size: 24px; font-wei=
+ght:bold; line-height: 27px; color: #000000; padding: 20px 15px 0px 10px; f=
+ont-family: arial">Weekly Picture</td></tr><tr class=3D"date-download"><td =
+width=3D"60%" style=3D"font-size:14px; font-family: arial; color: #888888;"=
+ align=3D"left" valign=3D"middle" class=3D"date">October 19, 2018</td></tr>=
+</table></td></tr><tr class=3D"media-container"><td style=3D"border:1px sol=
+id #cccccc; border-bottom: 0px;"><table width=3D"440"><tr><td style=3D"widt=
+h:440px; background-color:#f2f2f2; padding-bottom:20px" class=3D"spacer-20p=
+x"></td></tr></table><table border=3D"0" width=3D"420" cellpadding=3D"0" ce=
+llspacing=3D"0" bgcolor=3D"#ffffff" align=3D"center" style=3D"margin: 0 aut=
+o"><tbody class=3D"moments"><tr><td align=3D"center"><a href=3D"http://emai=
+l.kaymbu.com/wf/click?upn=3DU40dFIy1IQEvw3vaG47ZIYiGHD81b-2BMBfKQ91rYG5Qp9X=
+ZKPyjUkTBZGB8DeJcD4bn-2BkbfJD1ToZ2tFw3V5zcBWqgWJoxncg6HXcnYmpqD-2Fs1yX4hYme=
+yrwsISomS1fC_Ru5N6PJ4ngeR7K-2Fncs2CW2r-2FVzSsRqHH2FDAEmGWdCdOs9zP5wzXbhSlgc=
+ZZ2S7eBChvTsmQOD-2BoqhbJRixB-2B1IJ8JNSr5Jl58tZerEEyzoqtVpd7CE8dXiJXWexPNBpJ=
+6XGxOn0iH8-2FfTbL07mI7Q8-2BfwD6mNt94LsqLeLpac1mRUrqACiWkc864qQdXNhkVgTUPei2=
+sqObUmCv72Ofntouz0hZBX0h9yD3i3EWMzZtxZFiCfqNcTBqxz1Fvf8l-2B0oRyT4bA6prc92TD=
+-2Bq-2B06x-2F4oWoYrAAWTT9aUywKTCd13igYh5IBcw5e0RN2KjKJOXMuB0t-2FSzFRQPaIBI4=
+fbwDghamB81w-2BfyCnU5fP9MC23cDrYAjIZwwK-2BYYj9AH7lC3ubCm3knr3DNB1nUHDg-3D-3=
+D" target=3D"_blank"><img class=3D"moment-image" src=3D"https://d2k9f6tk478=
+nyp.cloudfront.net/drafts/5b47c424db8f39f25f3c0a2a/w0Viwt4zSv6OcyWrQsgA_dis=
+play.jpg" style=3D"display:block" width=3D"420" border=3D"0"></a></td></tr>=
+</tbody><tbody class=3D"download-panel"><tr><td style=3D"padding:10px 15px =
+10px 10px"><table border=3D"0" width=3D"100%" cellpadding=3D"0" cellspacing=
+=3D"0" bgcolor=3D"#ffffff" align=3D"center"><td width=3D"50%" align=3D"left=
+"><a href=3D"http://email.kaymbu.com/wf/click?upn=3DU40dFIy1IQEvw3vaG47ZIaW=
+omyi0uhdrcxyvAPr5FeOB6EXCpYj3GuhmtmKFmPS6JWRSoZ-2Bon21W94y3SDkt9LLHzdWLpBCo=
+-2BN-2FuayK-2FQG2AKOzdokXBDQ9MjbUpguHjXfODj6SokV87BxHFZU02gg-3D-3D_Ru5N6PJ4=
+ngeR7K-2Fncs2CW2r-2FVzSsRqHH2FDAEmGWdCdOs9zP5wzXbhSlgcZZ2S7eBChvTsmQOD-2Boq=
+hbJRixB-2B1IJ8JNSr5Jl58tZerEEyzoqtVpd7CE8dXiJXWexPNBpJ6XGxOn0iH8-2FfTbL07mI=
+7Q8-2BfwD6mNt94LsqLeLpac1mRUrqACiWkc864qQdXNhkVgTUPei2sqObUmCv72Ofntouz0hZB=
+X0h9yD3i3EWMzZo8M9vvblt5zkFFKqB6-2BDzBNk3nY-2BiEx2hC4U-2BZqTFN4MOcoCk4oLw69=
+Emh6rNMis8-2BWfF3Jfu-2BqdHu3aC9PK39Evv7k5uyCPtFlOcUvGN2VhktiyJrvwDfrK0PK61f=
+OHPOWLae7mnMfupNLWWOu94sZL6AGZznEIpntCQ529jqA-3D-3D" target=3D"_blank"><img=
+ src=3D"https://d2k9f6tk478nyp.cloudfront.net/email/comment_btn-v1.png" alt=
+=3D"Send a comment" style=3D"display:block" border=3D"0"/></a></td><td widt=
+h=3D"50%" align=3D"right"><a href=3D"http://email.kaymbu.com/wf/click?upn=
+=3DU40dFIy1IQEvw3vaG47ZIYiGHD81b-2BMBfKQ91rYG5Qp9XZKPyjUkTBZGB8DeJcD4bn-2Bk=
+bfJD1ToZ2tFw3V5zcBWqgWJoxncg6HXcnYmpqD-2Fs1yX4hYmeyrwsISomS1fC_Ru5N6PJ4ngeR=
+7K-2Fncs2CW2r-2FVzSsRqHH2FDAEmGWdCdOs9zP5wzXbhSlgcZZ2S7eBChvTsmQOD-2BoqhbJR=
+ixB-2B1IJ8JNSr5Jl58tZerEEyzoqtVpd7CE8dXiJXWexPNBpJ6XGxOn0iH8-2FfTbL07mI7Q8-=
+2BfwD6mNt94LsqLeLpac1mRUrqACiWkc864qQdXNhkVgTUPei2sqObUmCv72Ofntouz0hZBX0h9=
+yD3i3EWMzYqr5mMmJim4LAkEusG6deNIAQi728azbhKAOdE1YzzKvq1CQMl2xSXE-2B2tYegFYS=
+G1LaWvkk9z4Bwo7OScjinTLC9lxHruaguQexssVXPqApqkZo-2FG6gxCW8cnU-2BXJ3wiAhDAPM=
+unKzIp0-2BlM8RgS99NU2dwojvvR8Ogn-2FMNV3TQ-3D-3D" target=3D"_blank"><img src=
+=3D"https://d2k9f6tk478nyp.cloudfront.net/email/download_btn-v1.png" width=
+=3D"100" alt=3D"Download this moment" style=3D"display:block" border=3D"0"/=
+></a></td></table></td></tr></tbody><tbody class=3D"bottom-spacer"><tr><td =
+style=3D"width:440px; background-color:#f2f2f2; padding-bottom:20px" class=
+=3D"spacer-20px"></td></tr></tbody></table></td></tr><tr class=3D"footer-co=
+ntainer"><td style=3D"border:1px solid #cccccc; border-top: 0px;"><table wi=
+dth=3D"100%" cellspacing=3D"0" cellpadding=3D"0" border=3D"0" style=3D"colo=
+r: #d8dbdc; background-color:#f0f0f0; font-size:14px;"><tr><td align=3D"lef=
+t" valign=3D"top"><!-- Thin Division Line --><div style=3D"width: 100%; hei=
+ght: 1px; border-bottom: 2px solid #179f9e; display: block;"></div><table w=
+idth=3D"100%" cellspacing=3D"0" cellpadding=3D"10" border=3D"0"><tr><td ali=
+gn=3D"left" valign=3D"middle" style=3D"padding: 20px 20px 10px 20px"><a hre=
+f=3D"http://email.kaymbu.com/wf/click?upn=3DYYLkTWwbY85Jfv4uwUB7DJ4578Mu09v=
+CE4PStHttPuy4pVe4MvRog4WHvTAG5o7w_Ru5N6PJ4ngeR7K-2Fncs2CW2r-2FVzSsRqHH2FDAE=
+mGWdCdOs9zP5wzXbhSlgcZZ2S7eBChvTsmQOD-2BoqhbJRixB-2B1IJ8JNSr5Jl58tZerEEyzoq=
+tVpd7CE8dXiJXWexPNBpJ6XGxOn0iH8-2FfTbL07mI7Q8-2BfwD6mNt94LsqLeLpac1mRUrqACi=
+Wkc864qQdXNhkVgTUPei2sqObUmCv72Ofntouz0hZBX0h9yD3i3EWMzaK1uPCsF8rhZw9j8rqzR=
+MiAIF48qqXuOSKlC2rxsqbbmRUCLhtXGrsU-2B9c6P6MgQF1Give1PaHR3FLYFZ8OlVe7W1JXtO=
+YvDEXFKgtLtyRsZg-2B0tqOr08UR3plrV8eXkABlUNJb0r-2BprZSAABhCYksYoVLonNyUqPCUZ=
+hV5YS8Yg-3D-3D" target=3D"_blank" style=3D"text-decoration: none;"><img src=
+=3D"https://d2k9f6tk478nyp.cloudfront.net/email/footer_logo_small-v1.png" w=
+idth=3D"71" height=3D"35" border=3D"0"/></a></td><td align=3D"center" valig=
+n=3D"middle" width=3D"96" style=3D"padding: 20px 15px 10px 5px"><a href=3D"=
+http://email.kaymbu.com/wf/click?upn=3DtlDvzXbmSgzJz0OvaxqmfI71zLdRJXRLCILp=
+sgqPb13CpKwYRoPtoKE02JeYnVVq5Os8EYYS6c7PCQQ7gCU7oVB-2FGvpXXR-2B34FxUTU3lKE8=
+-3D_Ru5N6PJ4ngeR7K-2Fncs2CW2r-2FVzSsRqHH2FDAEmGWdCdOs9zP5wzXbhSlgcZZ2S7eBCh=
+vTsmQOD-2BoqhbJRixB-2B1IJ8JNSr5Jl58tZerEEyzoqtVpd7CE8dXiJXWexPNBpJ6XGxOn0iH=
+8-2FfTbL07mI7Q8-2BfwD6mNt94LsqLeLpac1mRUrqACiWkc864qQdXNhkVgTUPei2sqObUmCv7=
+2Ofntouz0hZBX0h9yD3i3EWMzY3VOATGIDLEiZcHvCFVksFMDwtuq78ale1YGTCGtwyKJ0WTmgc=
+84e4tY6o7GebbgC9bwfkWw3vcrSIG7zWFqKiC7Zy78QfgvdnQZaYYyrlAt2PQ9EDZkylFompI2x=
+ldHIeZ-2F5q-2Fq6M4-2BUUFueHd1amr9r-2BsbtcnXhuUdueL6wIFA-3D-3D" target=3D"_b=
+lank" style=3D"text-decoration: none;"><img src=3D"https://d2k9f6tk478nyp.c=
+loudfront.net/email/appstore-ios-icon_small-v3.png" width=3D"96" height=3D"=
+29" border=3D"0"/></a></td><td align=3D"left" valign=3D"middle" width=3D"96=
+" style=3D"padding: 20px 15px 10px 5px"><a href=3D"http://email.kaymbu.com/=
+wf/click?upn=3D9Ri0Q1DnHN6cvC20zPAojxGcTZv2-2FV7RdmoSDfzydDzX02dhyeNr-2Fvay=
+H-2B9DwhdxzJ-2F1vxlfRZ3bDr9E5K5PLFsqnKS6CFm0Jxoe8TEE97w-3D_Ru5N6PJ4ngeR7K-2=
+Fncs2CW2r-2FVzSsRqHH2FDAEmGWdCdOs9zP5wzXbhSlgcZZ2S7eBChvTsmQOD-2BoqhbJRixB-=
+2B1IJ8JNSr5Jl58tZerEEyzoqtVpd7CE8dXiJXWexPNBpJ6XGxOn0iH8-2FfTbL07mI7Q8-2Bfw=
+D6mNt94LsqLeLpac1mRUrqACiWkc864qQdXNhkVgTUPei2sqObUmCv72Ofntouz0hZBX0h9yD3i=
+3EWMzYr4guyXQ4e8WL0iLO-2BLIdyjCB-2FfiLaotdTuABqNjvuFPowKuxsEwZvlfpzUb-2BSJd=
+25Iu7nEwiRUTdkPLCa98qYbJ64lzR0dSMH-2FDiRDcBrDE4DGNvUN2GHXUfL5AHs88I2J8Dwggc=
+lxdHV9lQMyvVNxLSyClxtRT9RGE705gCnNw-3D-3D" target=3D"_blank" style=3D"text-=
+decoration: none;"><img src=3D"https://d2k9f6tk478nyp.cloudfront.net/email/=
+appstore-android-icon_small-v3.png" width=3D"96" height=3D"29" border=3D"0"=
+/></a></td></tr></table></td></tr></table></td></tr></table></td></tr></tab=
+le><div></div>
+<img src=3D"http://email.kaymbu.com/wf/open?upn=3DRu5N6PJ4ngeR7K-2Fncs2CW2r=
+-2FVzSsRqHH2FDAEmGWdCdOs9zP5wzXbhSlgcZZ2S7eBChvTsmQOD-2BoqhbJRixB-2B1IJ8JNS=
+r5Jl58tZerEEyzoqtVpd7CE8dXiJXWexPNBpJ6XGxOn0iH8-2FfTbL07mI7Q8-2BfwD6mNt94Ls=
+qLeLpac1mRUrqACiWkc864qQdXNhkVgTUPei2sqObUmCv72Ofntouz0hZBX0h9yD3i3EWMzZxQd=
+Ht9uzNE8gD4W6UY0c59dVMQGC7Xk0piRQnL3A-2BFhq7cQSFcTTWmm5CETJWaTJZi6z7MsK3-2B=
+7hf-2Ba0bM-2FJph4T-2F8ZaGSJ7sW6AIlhHcjCs-2BfKl442Nj6deXbwKYSv4YIt3rrW1Hon0v=
+9-2FMepn5-2FjXywPbNEIqqllVkBQT7NkMFbAMui94jpCmSm61AwlOA-3D" alt=3D"" width=
+=3D"1" height=3D"1" border=3D"0" style=3D"height:1px !important;width:1px !=
+important;border-width:0 !important;margin-top:0 !important;margin-bottom:0=
+ !important;margin-right:0 !important;margin-left:0 !important;padding-top:=
+0 !important;padding-bottom:0 !important;padding-right:0 !important;padding=
+-left:0 !important;"/>
+</body>
