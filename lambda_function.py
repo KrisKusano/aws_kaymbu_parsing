@@ -1,10 +1,15 @@
 import email
 import urllib.parse
-from typing import List
+from typing import List, Tuple
 
 import boto3
 
-from note_parse import parse_gretchens_notes, Activity, Nap
+from note_parse import (
+    parse_gretchens_notes,
+    Activity,
+    Nap,
+    parse_gretchens_picture
+)
 from sdb_modify_domain import SDB_DOMAIN
 
 print('Loading function')
@@ -23,7 +28,7 @@ def lambda_handler(event, context):
     lambda_worker(bucket, key)
 
 
-def lambda_worker(bucket: str, key: str) -> None:
+def lambda_worker(bucket: str, key: str) -> Tuple[List[Activity], List[Nap]]:
     try:
         response = s3.get_object(Bucket=bucket, Key=key)
         print('Load email from bucket {}, key {}'.format(bucket, key))
@@ -41,20 +46,50 @@ def lambda_worker(bucket: str, key: str) -> None:
         raise e
 
     # Parse email for activities
+    activities, naps = None, None
     try:
         activities, naps = parse_gretchens_notes(body)
     except Exception as e:
         print(e)
         print('Error parsing activities out of email')
-        raise e
 
     # put in SimpleDB
-    try:
-        put_sdb_activities(sdb, activities, naps)
-    except Exception as e:
-        print(e)
-        print('Error while putting data in SimpleDB')
-        raise e
+    if activities and naps:
+        try:
+            put_sdb_activities(sdb, activities, naps)
+        except Exception as e:
+            print(e)
+            print('Error while putting data in SimpleDB')
+            raise e
+        else:
+            print('Put in simpleDB successfully')
+
+        return activities, naps
+    else:
+        print('Trying to parse as media email')
+        try:
+            media_out = parse_gretchens_picture(body)
+        except Exception as e:
+            print(e)
+            print('Error parsing media email')
+            raise e
+
+        try:
+            for media, activity_info in media_out:
+                s3.put_object(
+                    Body=media,
+                    Bucket=bucket,
+                    Key='media/{}'.format(activity_info.result)
+                )
+                put_sdb_activities(sdb, [activity_info], [])
+
+            _, activities = zip(*media_out)
+            return activities, []
+        except Exception as e:
+            print(e)
+            print('Error putting media: {}'.format(activity_info))
+            raise e
+
 
 
 def put_sdb_activities(sdb: boto3.client,

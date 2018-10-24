@@ -1,10 +1,14 @@
 import email
 import json
 import subprocess
+from datetime import datetime as dt
 from unittest import TestCase
 
+import boto3
+import pytz
+
+from lambda_function import lambda_handler, lambda_worker
 from note_parse import parse_gretchens_notes, parse_gretchens_picture
-from lambda_function import lambda_handler
 
 
 def _load_email(test_path: str) -> str:
@@ -98,5 +102,44 @@ class TestNoteParse(TestCase):
         lambda_handler(event, None)
 
     def test_weekly_picture(self):
+        """
+        Download an image from their server
+
+        Note: I do not know when the image link in this emai lwill expire and
+        thus make this test fail...
+        """
         mail = _load_email('test_weekly_picture')
-        parse_gretchens_picture(mail)
+        output = parse_gretchens_picture(mail)
+        # one media item found
+        self.assertEqual(1, len(output))
+        # image name extracted from header correctly
+        self.assertEqual('5bca27da361b5d0014939f80.jpg',
+                         output[0][1].result)
+        # non-zero image content
+        self.assertGreater(len(output[0][0]), 0)
+
+    def test_weekly_picture_worker(self):
+        bucket = 'gretchens-house-emails'
+        key = 'test_weekly_picture'
+        activities, _ = lambda_worker(bucket, key)
+
+        # check object was put in s3 recently
+        s3 = boto3.client('s3')
+        out_file = activities[0].result
+        obj_info = s3.head_object(
+            Bucket=bucket,
+            Key='media/{}'.format(out_file)
+        )
+        mod_diff = obj_info['LastModified'] - dt.now().astimezone(pytz.utc)
+        self.assertLess(mod_diff.total_seconds(),
+                        60)
+
+        # check it is in simpledb
+        sdb = boto3.client('sdb')
+        query_str = 'select * from `gretchens-notes-db` where ' + \
+                    'activity = "Media" and result = "{}"'
+        res = sdb.select(
+            SelectExpression=query_str.format(out_file)
+        )
+        self.assertTrue('Items' in res)
+        self.assertEqual(1, len(res['Items']))

@@ -1,3 +1,4 @@
+import os
 import re
 from collections import namedtuple
 from datetime import datetime
@@ -150,7 +151,7 @@ def parse_gretchens_notes(email_payload: str
     return activities, naps
 
 
-def parse_gretchens_picture(email: str):
+def parse_gretchens_picture(email: str) -> List[Tuple[bytes, Activity]]:
     payload = _remove_line_breaks(email)
     re_date = re.compile('class="date">(.*?)</td>')
     re_date_search = re_date.search(payload)
@@ -159,8 +160,14 @@ def parse_gretchens_picture(email: str):
     else:
         raise ValueError('Could not find date in picture email')
 
-    date = datetime.strptime(this_date, "%B %d, %Y")
+    # time
+    time_zone = pytz.timezone('US/Eastern')
+    date_raw = datetime.strptime(this_date, "%B %d, %Y")
+    date = _make_iso_time(datetime.today(),
+                          date_raw,
+                          time_zone)
 
+    # find download link
     re_download_link = re.compile(
         '<a href="(.*?)" target=.*><img src=".*/download_btn'
     )
@@ -186,12 +193,36 @@ def parse_gretchens_picture(email: str):
 
     # download
     base_url = "http://export.kaymbu.com/download/moments?{}&"
+    out = []
     for media_id in media_search.groups():
         this_url = base_url.format(media_id)
-        media_resp = requests.get(this_url)
+        media_resp = requests.get(this_url,
+                                  stream=True)
         if media_resp.status_code != 200:
             e_str = 'Could not download media file {}'
             raise ValueError(e_str.format(this_url))
+        headers = media_resp.headers
+        media_name = None
+        if 'Content-Disposition' in headers:
+            content_split = headers['Content-Disposition'].split(';')
+            content_split = [x.strip() for x in content_split]
+            if content_split[0] == 'attachment':
+                if content_split[1].startswith('filename'):
+                    media_name = content_split[1][9:]
+        if not media_name:
+            print('No media name found in header: {}'.format(headers))
+
+        _, media_ext = os.path.splitext(media_name)
+        media_obj_name = media_id + media_ext
+        act_info = Activity(first_name=media_obj_name,
+                            date=date_raw.strftime('%Y-%m-%d'),
+                            activity='Media',
+                            datetime=date,
+                            result=media_obj_name,
+                            notes=media_name
+                            )
+        out.append((media_resp.content, act_info))
+    return out
 
 
 def _remove_line_breaks(body: str) -> str:
