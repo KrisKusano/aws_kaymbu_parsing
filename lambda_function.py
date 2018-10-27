@@ -44,6 +44,10 @@ def lambda_worker(bucket: str, key: str) -> Tuple[List[Activity], List[Nap]]:
         print(e)
         print('Could not parse email')
         raise e
+    lambda_parser(body, bucket)
+
+
+def lambda_parser(body: str, bucket: str) -> None:
 
     # Parse email for activities
     activities, naps = None, None
@@ -89,7 +93,6 @@ def lambda_worker(bucket: str, key: str) -> Tuple[List[Activity], List[Nap]]:
             print(e)
             print('Error putting media: {}'.format(activity_info))
             raise e
-
 
 
 def put_sdb_activities(sdb: boto3.client,

@@ -14,6 +14,8 @@ import shutil
 import sys
 import zipfile
 
+from git import Repo
+
 DEPLOY_NAME = 'deploy'
 
 # files to copy to distribution
@@ -24,7 +26,12 @@ SRC_LIST = [
 ]
 
 SITE_PACKAGES = [
-    "pytz"
+    "pytz",
+    "requests",
+    "idna",
+    "chardet",
+    "urllib3",
+    "certifi"
 ]
 
 def get_logger():
@@ -72,6 +79,19 @@ def deploy():
     get_logger().info("Copying source files...")
     for src_file in SRC_LIST:
         shutil.copy(os.path.join(this_dir, src_file), deploy_dir)
+
+    get_logger().info("Writing version info")
+    repo = Repo(this_dir)
+    commit = repo.head.commit
+    with open(os.path.join(deploy_dir, 'VERSION.txt'), 'w') as ver_file:
+        ver_file.write("commit {}\n".format(commit.hexsha))
+        ver_file.write("Author: {} <{}>\n".format(commit.author.name,
+                                                commit.author.email))
+        ver_file.write("Date:   {}\n".format(
+            commit.authored_datetime.isoformat())
+        )
+        ver_file.write("\n")
+        ver_file.write(commit.message)
 
     get_logger().info("Zipping")
     zip_path_out = os.path.join(this_dir, DEPLOY_NAME + '.zip')

@@ -2,7 +2,7 @@ import logging
 import os
 import sys
 
-from note_parse import parse_gretchens_notes
+from lambda_function import lambda_parser
 from test import _load_email
 
 if __name__ == '__main__':
@@ -12,4 +12,4 @@ if __name__ == '__main__':
         logging.info('Parsing {}'.format(file_path))
         full_path = os.path.join(input_dir, file_path)
         payload = _load_email(full_path)
-        parse_gretchens_notes(payload)
+        lambda_parser(payload, 'gretchens-house-emails')

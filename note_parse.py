@@ -188,13 +188,22 @@ def parse_gretchens_picture(email: str) -> List[Tuple[bytes, Activity]]:
     download_txt = download_page.text
     re_media = re.compile('<div data-type=".*" data-id="(.*?)"')
     media_search = re_media.search(download_txt)
+    base_url = "http://export.kaymbu.com/download/moments?{}"
     if not media_search:
-        raise ValueError('No media found')
+        print('No media found, trying to find video instead')
+        re_str = '<a href="{}" class="download-btn">'
+        media_search = re.search(re_str.format(base_url.format('(.*)')),
+                                 download_txt)
+        if not media_search:
+            raise ValueError('Unable to find media or video strings')
+
 
     # download
-    base_url = "http://export.kaymbu.com/download/moments?{}&"
     out = []
     for media_id in media_search.groups():
+        # video strings have this added in
+        media_id = media_id.replace('/?', '')
+        print('Downloading media ID {}'.format(media_id))
         this_url = base_url.format(media_id)
         media_resp = requests.get(this_url,
                                   stream=True)
