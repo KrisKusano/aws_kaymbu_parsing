@@ -1,15 +1,20 @@
+import io
 import html as py_html
 import logging
+import os
 import re
 from datetime import datetime, timedelta
-from typing import Dict, List, Tuple
+from typing import Any, Dict, List, Tuple
 
 import boto3
+import botocore
 import dash_html_components as html
 import dateutil.parser
 import pandas as pd
+from PIL import Image
 
 
+s3 = boto3.resource('s3')
 sdb = boto3.client('sdb')
 
 
@@ -163,3 +168,59 @@ def get_week_data(date: str) -> Dict:
         del out_data['NextToken']
 
     return out_data
+
+
+def get_media_keys(data: Dict[str, Any]) -> List[str]:
+    """
+    Parse data for media keys
+    """
+    media_data = _get_item_by_activity(data['Items'], 'Media')
+    media_keys = []
+    for media_item in media_data:
+        for atrib in media_item['Attributes']:
+            if atrib['Name'] == 'result':
+                media_keys.append(atrib['Value'])
+                break
+    return media_keys
+
+
+def download_media(media_key: str):
+    bucket = "gretchens-house-emails"
+    key = '/'.join(['media', media_key])
+    try:
+        data = s3.Object(bucket, key).get()['Body'].read()
+    except botocore.exceptions.ClientError as e:
+        if e.response['Error']['Code'] == '404':
+            print('No key in s3: {}'.format(key))
+        else:
+            raise(e)
+
+    # turn into PIL and fix it
+    img_stream = io.BytesIO(data)
+    img = Image.open(img_stream)
+
+    # handle rotation exif data
+    exif = img._getexif()
+    if exif:
+        orientation = exif[274]
+        rotation = None
+        if orientation == 3:
+            rotation = Image.ROTATE_180
+        elif orientation == 6:
+            rotation = Image.ROTATE_270
+        elif orientation == 8:
+            rotation = Image.ROTATE_90
+
+        if rotation:
+            img = img.transpose(rotation)
+
+    # get bytes out of converted image back out
+    img_out_stream = io.BytesIO()
+    _, img_ext = os.path.splitext(media_key)
+    img_fmt = img_ext[1:].upper()
+    if img_fmt == 'JPG':
+        img_fmt = 'JPEG'
+    img.save(img_out_stream, format=img_fmt)
+    return img_out_stream.getvalue(), img.size
+
+

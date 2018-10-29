@@ -4,7 +4,7 @@ from unittest import TestCase
 from datetime import datetime
 import re
 
-from ..get_data import compute_nap_times, get_activty_table
+from ..get_data import compute_nap_times, get_activty_table, get_media_keys
 
 
 def get_test_week_data():
@@ -51,3 +51,9 @@ class TestGetData(TestCase):
     def testActivityTable(self):
         table = get_activty_table(self.week_data['Items'])
         self.assertEqual(6, len(table.children))
+
+    def testGetMediaKeys(self):
+        media_keys = get_media_keys(self.week_data)
+        self.assertEqual(1, len(media_keys))
+        self.assertEqual('5bca27da361b5d0014939f80.jpg',
+                         media_keys[0])

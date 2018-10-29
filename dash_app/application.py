@@ -1,13 +1,21 @@
+import base64
 from datetime import datetime as dt
 from datetime import timedelta
-from typing import Any, Dict
+import os
+from typing import Any, Dict, Tuple
 
 import dash
 import dash_core_components as dcc
 import dash_html_components as html
 from flask_caching import Cache
 
-from .get_data import compute_nap_times, get_activty_table, get_week_data
+from .get_data import (
+    compute_nap_times,
+    get_activty_table,
+    get_week_data,
+    get_media_keys,
+    download_media
+)
 from .test.test_get_data import get_test_week_data
 
 external_stylesheets = ['https://codepen.io/chriddyp/pen/bWLwgP.css']
@@ -61,9 +69,12 @@ def create_app(is_test: bool=False):
         dcc.Graph(id='nap-time-bar-graph'),
         html.H2(children="Activity Notes"),
         html.Table(id='activity-table'),
+        html.H2(children="Media"),
+        html.Div(id="media-div"),
         html.Div(id="data-div", style={"display": "none"})
     ])
 
+    # cache for events data
     @cache.memoize()
     def cache_week_data(date) -> Dict:
         if app.config['TESTING']:
@@ -126,5 +137,40 @@ def create_app(is_test: bool=False):
     def update_activity_table(date):
         data = cache_week_data(date)
         return get_activty_table(data['Items'])
+
+    # cache for images
+    @cache.memoize()
+    def cache_images(image_key) -> Tuple[str, Tuple[int, int]]:
+        """
+        Download image from s3 and serve as a base64 encoded string
+        """
+        img_raw, size = download_media(image_key)
+        return base64.b64encode(img_raw).decode('utf-8'), size
+
+    @app.callback(
+        dash.dependencies.Output('media-div', 'children'),
+        [dash.dependencies.Input('data-div', 'children')]
+    )
+    def update_media(date):
+        week_start = compute_week_start(date)
+        data = cache_week_data(week_start)
+        media_keys = get_media_keys(data)
+        img_out = []
+        src_fstr = 'data:image/{};base64,{}'
+        img_width = 700
+        for media_key in media_keys:
+            _, ext = os.path.splitext(media_key)
+            if ext.upper() == '.MP4':
+                print('Skipping download of video {}'.format(media_key))
+                continue
+            img_base64, img_size = cache_images(media_key)
+            img_aspect = img_size[0] / img_size[1]
+            img_height = int(img_width / img_aspect)
+            img_out.append(html.Img(src=src_fstr.format(ext[1:],
+                                                        img_base64),
+                                    width='{:d}'.format(img_width),
+                                    height='{:d}'.format(img_height)))
+        return img_out
+
 
     return app
